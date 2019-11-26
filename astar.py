@@ -1,5 +1,3 @@
-import json
-
 class Node():
     '''A class for storing node info'''
     def __init__(self, pos=None, parent=None):
