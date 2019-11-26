@@ -1,3 +1,5 @@
+import json
+
 class Node():
     '''A class for storing node info'''
     def __init__(self, pos=None, parent=None):
@@ -100,8 +102,9 @@ def main():
     path = astar(maze, startPos, endPos)
     print(path)
 
-    for step in path:
-        maze[step[0]][step[1]] = 'x'
+    if type(path) == int:
+        for step in path:
+            maze[step[0]][step[1]] = 'x'
 
     for line in maze:
         for e in line:
