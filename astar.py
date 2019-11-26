@@ -70,10 +70,13 @@ def astar(maze, startPos, endPos):
             # If the child is already in the open list, but with higher g cost, skip it
             for openNode in openList:
                 if child == openNode and child.g > openNode.g:
-                    continue
+                    break
 
             # Add the child to the open list
-            openList.append(child)
+            else:
+                openList.append(child)
+
+    return 'No path found'
 
 
 def main():
@@ -82,7 +85,7 @@ def main():
             [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 1, 0, 0, 0],
+            [0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
