@@ -60,6 +60,7 @@ def astar(maze, startPos, endPos):
 
         # Calculate G, H and F cost for the children
         for child in children:
+            # If the child is in the closed list skip it
             if child in closedList:
                 continue
 
@@ -69,23 +70,24 @@ def astar(maze, startPos, endPos):
 
             # If the child is already in the open list, but with higher g cost, skip it
             for openNode in openList:
-                if child == openNode and child.g > openNode.g:
+                if child == openNode and child.g >= openNode.g:
                     break
 
             # Add the child to the open list
             else:
                 openList.append(child)
 
+    # If the open list is empty there is no possible path
     return 'No path found'
 
 
 def main():
-    maze = [[0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    maze = [[0, 0, 0, 0, 1, 0, 0, 0, 0, 0],  # 0 = free space
+            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],  # 1 = wall
             [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+            [0, 0, 0, 0, 1, 0, 1, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
