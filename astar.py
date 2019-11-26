@@ -102,7 +102,7 @@ def main():
     path = astar(maze, startPos, endPos)
     print(path)
 
-    if type(path) == int:
+    if type(path) == list:
         for step in path:
             maze[step[0]][step[1]] = 'x'
 
