@@ -100,4 +100,13 @@ def main():
     path = astar(maze, startPos, endPos)
     print(path)
 
+    for step in path:
+        maze[step[0]][step[1]] = 'x'
+
+    for line in maze:
+        for e in line:
+            print(e, end=' ')
+        print()
+
+
 if __name__ == '__main__':main()
