@@ -44,7 +44,7 @@ def astar(maze, startPos, endPos):
         # Find all the adjacent valid children to the current node
         children = []
 
-        for addPos in [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]:
+        for addPos in [(-1, 0), (0, -1), (0, 1), (1, 0)]:
             newPos = (currentNode.pos[0] + addPos[0],
                       currentNode.pos[1] + addPos[1])
 
@@ -66,7 +66,7 @@ def astar(maze, startPos, endPos):
                 continue
 
             child.g = currentNode.g + 1
-            child.h = ((endNode.pos[0]-child.pos[0])**2+(endNode.pos[1]-child.pos[1])**2)**0.5
+            child.h = endNode.pos[0]-child.pos[0]+endNode.pos[1]-child.pos[1]
             child.f = child.g + child.h
 
             # If the child is already in the open list, but with higher g cost, skip it
