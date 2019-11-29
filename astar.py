@@ -53,7 +53,7 @@ def astar(maze, startPos, endPos):
                 continue
             
             # Check if the child is a wall
-            if maze[newPos[0]][newPos[1]]:
+            if not maze[newPos[0]][newPos[1]]:
                 continue
 
             # Add the child to the children list
@@ -65,7 +65,7 @@ def astar(maze, startPos, endPos):
             if child in closedList:
                 continue
 
-            child.g = currentNode.g + 1
+            child.g = currentNode.g + maze[currentNode.pos[0]][currentNode.pos[1]]
             child.h = endNode.pos[0]-child.pos[0]+endNode.pos[1]-child.pos[1]
             child.f = child.g + child.h
 
@@ -83,16 +83,16 @@ def astar(maze, startPos, endPos):
 
 
 def main():
-    maze = [[0, 0, 0, 0, 1, 0, 0, 0, 0, 0],  # 0 = free space
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],  # 1 = wall
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 1, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 1, 0, 0, 0]]
+    maze = [[1, 1, 1, 1, 0, 1, 1, 1, 1, 1],  # # = weighted free space
+            [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],  # (higher number = more difficult to pass from there)
+            [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],  # 0 = wall
+            [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 0, 1, 0, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 3, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 0, 1, 1, 1]]
 
     startPos = (2, 1)
     endPos = (7, 8)

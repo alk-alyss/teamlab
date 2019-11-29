@@ -14,16 +14,16 @@ blue = 0, 0, 255
 screen = pygame.display.set_mode(size)
 
 # The maze
-maze = [[0, 0, 0, 0, 1, 0, 0, 0, 0, 0],  # 0 = free space
-        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],  # 1 = wall
-        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 0, 1, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 1, 0, 0, 0]]
+maze = [[1, 1, 1, 1, 0, 1, 1, 1, 1, 1],  # # = weighted free space
+        [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],  # (higher number = more difficult to pass from there)
+        [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],  # 0 = wall
+        [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 0, 1, 0, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 5, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 0, 1, 1, 1]]
 
 # Start and end positions
 startPos = (2, 1)
@@ -60,10 +60,12 @@ while True:
             pos = j * cellSize[0] + 1, i * cellSize[1] + 1
             dim = cellSize[0]-1, cellSize[1]-1
             rect = pygame.Rect(pos, dim)
-            if maze[i][j] == 1: color = black
+            if not maze[i][j]: color = black
             elif i == startPos[0] and j == startPos[1]: color = red
             elif i == endPos[0] and j == endPos[1]: color = green
-            else: color = white 
+            else:
+                weight = maze[i][j]**0.5
+                color = list(map(int, (white[0]/weight, white[1]/weight, white[2]/weight)))
             grid[i].append(pygame.draw.rect(screen, color, rect))
 
     # Path drawing
