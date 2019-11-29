@@ -43,7 +43,7 @@ for line in maze:
     print()
 
 # Size of each cell in the grid
-cellSize = int(width/len(maze[0]))-1, int(height/len(maze))-1
+cellSize = int(width/len(maze[0])), int(height/len(maze))
 
 
 while True:
@@ -57,15 +57,25 @@ while True:
     for i in range(len(maze)):
         grid.append([])
         for j in range(len(maze[i])):
-            pos = j * (cellSize[0]+1)+1, i * (cellSize[1]+1)+1
-            rect = pygame.Rect(pos, cellSize)
+            pos = j * cellSize[0] + 1, i * cellSize[1] + 1
+            dim = cellSize[0]-1, cellSize[1]-1
+            rect = pygame.Rect(pos, dim)
             if maze[i][j] == 1: color = black
-            elif maze[i][j] == 'x': color = blue
             elif i == startPos[0] and j == startPos[1]: color = red
             elif i == endPos[0] and j == endPos[1]: color = green
             else: color = white 
             grid[i].append(pygame.draw.rect(screen, color, rect))
 
+    # Path drawing
+    newPath = []
+
+    for point in path:
+        y = int(point[0] * cellSize[1] + cellSize[1]/2)
+        x = int(point[1] * cellSize[0] + cellSize[0]/2)
+        newPoint = x, y
+        newPath.append(newPoint)
+
+    drawPath = pygame.draw.lines(screen, blue, False, newPath, 3)
     
 
     pygame.display.flip()
