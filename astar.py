@@ -38,7 +38,7 @@ def astar(maze, startPos, endPos):
             while currentNode.parent is not None:
                 path.append(currentNode.pos)
                 currentNode = currentNode.parent
-            path.remove(endNode.pos)
+            path.append(startNode.pos)
             return path[::-1]
 
         # Find all the adjacent valid children to the current node
