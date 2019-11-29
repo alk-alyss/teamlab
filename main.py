@@ -34,13 +34,13 @@ print(path)
 
 # Console print out of the found path
 if type(path) == list:
-    for step in path:
-        maze[step[0]][step[1]] = 'x'
-
-for line in maze:
-    for e in line:
-        print(e, end=' ')
-    print()
+    for i in range(len(maze)):
+        for j in range(len(maze[i])):
+            if (i,j) in path:
+                print('x', end=' ')
+            else:
+                print(maze[i][j], end=' ')
+        print()
 
 # Size of each cell in the grid
 cellSize = int(width/len(maze[0])), int(height/len(maze))
