@@ -42,7 +42,8 @@ blue = 0, 0, 255
 screen = pygame.display.set_mode(size)
 
 # Generate maze
-maze = generateMaze(10)
+mazeSize = 10
+maze = generateMaze(mazeSize)
 
 # Generate empty start and end positions
 startPos = None, None
