@@ -79,6 +79,7 @@ while True:
                 else: weight = event.key - 256
                 mazePos = screenToMaze(mousePos)
                 setWeight(mazePos, weight)
+            elif event.key == pygame.K_ESCAPE: sys.exit()
 
     # Draw the grid
     grid = []
