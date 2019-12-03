@@ -210,33 +210,38 @@ while True:
 
     # Check if the user has finnished drawing the maze
     if started:
-        # Draw the path
-        newPath = []
-        for point in path:
-            y = int(point[0] * cellSize[1] + cellSize[1]/2)
-            x = int(point[1] * cellSize[0] + cellSize[0]/2)
-            newPoint = x, y
-            newPath.append(newPoint)
+        if type(path) == list:
+            # Draw the path
+            newPath = []
+            for point in path:
+                y = int(point[0] * cellSize[1] + cellSize[1]/2)
+                x = int(point[1] * cellSize[0] + cellSize[0]/2)
+                newPoint = x, y
+                newPath.append(newPoint)
 
-        drawPath = pg.draw.lines(screen, blue, False, newPath, 3)
+            drawPath = pg.draw.lines(screen, blue, False, newPath, 3)
 
-        # Draw/animate the car
-        try:
-            newPos = mazeToScreen(path[p])
-            if startPos[1] < endPos[1] and flipped: flip()
-            elif startPos[1] > endPos[1] and not flipped: flip()
+            # Draw/animate the car
             try:
-                if newPos[0] < carPos[0] and not flipped: flip()
-                if newPos[0] > carPos[0] and flipped: flip()
-            except NameError:
-                pass
-            carPos = newPos
-            p += 1
-            pg.time.delay(int(1000/(mazeSize/5)))
-        except IndexError:
-            finnished = True
+                newPos = mazeToScreen(path[p])
+                if startPos[1] < endPos[1] and flipped: flip()
+                elif startPos[1] > endPos[1] and not flipped: flip()
+                try:
+                    if newPos[0] < carPos[0] and not flipped: flip()
+                    if newPos[0] > carPos[0] and flipped: flip()
+                except NameError:
+                    pass
+                carPos = newPos
+                p += 1
+                pg.time.delay(int(1000/(mazeSize/5)))
+            except IndexError:
+                finnished = True
 
-        screen.blit(car, carPos)
+            screen.blit(car, carPos)
+        # If there is no path print error message
+        else:
+            print('No path found')
+            started = False
 
     # Update screen
     pg.display.flip()
