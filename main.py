@@ -44,8 +44,8 @@ maze = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],  # # = weighted free space
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
 
 # Start and end positions
-startPos = 2, 1
-endPos = 7, 8
+startPos = None, None
+endPos = None, None
 
 # Size of each cell in the grid
 cellSize = int(width/len(maze[0])), int(height/len(maze))
