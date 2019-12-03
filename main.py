@@ -57,7 +57,7 @@ car = pygame.image.load('car.png')
 car = pygame.transform.scale(car, (54, 54))
 
 p = 0
-started = False
+started = finnished = False
 while True:
     # Event listener
     for event in pygame.event.get():
@@ -69,19 +69,22 @@ while True:
                 maze[mazePos[0]][mazePos[1]] = 0
             else:
                 maze[mazePos[0]][mazePos[1]] = 1
-        elif event.type == pygame.KEYDOWN and not started:
+        elif event.type == pygame.KEYDOWN:
             mousePos = pygame.mouse.get_pos()
-            if event.key == pygame.K_s: startPos = screenToMaze(mousePos)
-            elif event.key == pygame.K_e: endPos = screenToMaze(mousePos)
-            elif event.key == pygame.K_RETURN:
+            if event.key == pygame.K_s and not started: startPos = screenToMaze(mousePos)
+            elif event.key == pygame.K_e and not started: endPos = screenToMaze(mousePos)
+            elif event.key == pygame.K_RETURN and not started:
                 path = astar(maze, startPos, endPos)
                 started = True
-            elif event.key in range(48, 58) or event.key in range(256, 266):
+            elif event.key == pygame.K_RETURN and finnished:
+                started = finnished = False
+                p = 0
+            elif (event.key in range(48, 58) or event.key in range(256, 266)) and not started:
                 if event.key in range(48, 58): weight = event.key - 48
                 else: weight = event.key - 256
                 mazePos = screenToMaze(mousePos)
                 setWeight(mazePos, weight)
-            elif event.key == pygame.K_c:
+            elif event.key == pygame.K_c and not started:
                 maze = generateMaze(mazeSize)
                 startPos = None, None
                 endPos = None, None
@@ -123,7 +126,7 @@ while True:
             p += 1
             pygame.time.delay(500)
         except IndexError:
-            continue
+            finnished = True
 
         screen.blit(car, carPos)
 
