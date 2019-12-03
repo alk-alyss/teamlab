@@ -9,6 +9,13 @@ def mazeToScreen(pos):
     posY = int(pos[0] * cellSize[1])
     return posX, posY
 
+def screenToMaze(pos):
+    '''Take coordinates from the screen and convert it to a point on the maze'''
+    global cellSize
+    mazePosX = int(mousePos[0] / cellSize[0])
+    mazePosY = int(mousePos[1] / cellSize[1])
+    return mazePosY, mazePosX
+
 # Global variables
 size = width, height = 601, 501
 black = 0, 0, 0
@@ -21,33 +28,20 @@ blue = 0, 0, 255
 screen = pygame.display.set_mode(size)
 
 # The maze
-maze = [[1, 1, 1, 1, 0, 1, 1, 1, 1, 1],  # # = weighted free space
-        [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],  # (higher number = more difficult to pass from there)
-        [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],  # 0 = wall
-        [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 0, 1, 0, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 5, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 0, 1, 1, 1]]
+maze = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],  # # = weighted free space
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],  # (higher number = more difficult to pass from there)
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],  # 0 = wall
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
 
 # Start and end positions
-startPos = (2, 1)
-endPos = (7, 8)
-
-path = astar(maze, startPos, endPos)
-print(path)
-
-# Console print out of the found path
-if type(path) == list:
-    for i in range(len(maze)):
-        for j in range(len(maze[i])):
-            if (i,j) in path:
-                print('x', end=' ')
-            else:
-                print(maze[i][j], end=' ')
-        print()
+startPos = 2, 1
+endPos = 7, 8
 
 # Size of each cell in the grid
 cellSize = int(width/len(maze[0])), int(height/len(maze))
@@ -55,13 +49,30 @@ cellSize = int(width/len(maze[0])), int(height/len(maze))
 # Car
 car = pygame.image.load('car.png')
 car = pygame.transform.scale(car, (54, 54))
-carPos = mazeToScreen(startPos)
 
 p = 0
+started = False
 while True:
     # Event listener
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
+        elif event.type == pygame.MOUSEBUTTONDOWN and not started:
+            mousePos = pygame.mouse.get_pos()
+            mazePos = screenToMaze(mousePos)
+            if maze[mazePos[0]][mazePos[1]] == 1:
+                maze[mazePos[0]][mazePos[1]] = 0
+            else:
+                maze[mazePos[0]][mazePos[1]] = 1
+        elif event.type == pygame.KEYDOWN and not started:
+            if event.key == pygame.K_s:
+                mousePos = pygame.mouse.get_pos()
+                startPos = screenToMaze(mousePos)
+            elif event.key == pygame.K_e:
+                mousePos = pygame.mouse.get_pos()
+                endPos = screenToMaze(mousePos)
+            elif event.key == pygame.K_RETURN:
+                path = astar(maze, startPos, endPos)
+                started = True
 
     # Draw the grid
     grid = []
@@ -80,8 +91,8 @@ while True:
                 color = list(map(int, (white[0]/weight, white[1]/weight, white[2]/weight)))
             grid[i].append(pygame.draw.rect(screen, color, rect))
 
-    # Delay at the beginning for maze inspection
-    if pygame.time.get_ticks() > 3500:
+    # Check if the user has finnished drawing the maze
+    if started:
         # Draw the path
         newPath = []
 
@@ -101,7 +112,7 @@ while True:
         except IndexError:
             continue
 
-    screen.blit(car, carPos)
+        screen.blit(car, carPos)
 
     # Update screen
     pygame.display.flip()
