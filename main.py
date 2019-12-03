@@ -29,6 +29,11 @@ def generateMaze(size):
             maze[i].append(1)
     return maze
 
+def flip():
+    '''Flip the direction of the car horrizontally and toggle flipped flag'''
+    global car, flipped
+    car = pygame.transform.flip(car, True, False)
+    flipped = not flipped
 
 # Global variables
 size = width, height = 601, 501
@@ -58,6 +63,7 @@ car = pygame.transform.scale(car, (54, 54))
 
 p = 0
 started = finnished = False
+flipped = False
 while True:
     # Event listener
     for event in pygame.event.get():
@@ -125,6 +131,8 @@ while True:
 
         # Draw the car
         try:
+            if startPos[1] < endPos[1] and flipped: flip()
+            elif startPos[1] > endPos[1] and not flipped: flip()
             carPos = mazeToScreen(path[p])
             p += 1
             pygame.time.delay(500)
