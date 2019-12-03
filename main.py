@@ -184,7 +184,7 @@ while True:
             # Pressing ESC closes the window
             elif event.key == pg.K_ESCAPE: sys.exit()
         #  Window resizing
-        elif event.type == pg.VIDEORESIZE:
+        elif event.type == pg.VIDEORESIZE and not started:
             surface = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
 
     # Erase screen
