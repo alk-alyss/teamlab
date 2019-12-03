@@ -232,7 +232,7 @@ while True:
                 pass
             carPos = newPos
             p += 1
-            pg.time.delay(500)
+            pg.time.delay(int(1000/(mazeSize/5)))
         except IndexError:
             finnished = True
 
