@@ -2,6 +2,13 @@ import sys, pygame
 from astar import astar
 pygame.init()
 
+def getCarPos(pos):
+    '''Take a point from the path and convert it to coordinates on the screen'''
+    global cellSize
+    posX = int(pos[1] * cellSize[0] + (cellSize[0]-car.get_size()[0])/2)
+    posY = int(pos[0] * cellSize[1])
+    return posX, posY
+
 # Global variables
 size = width, height = 601, 501
 black = 0, 0, 0
@@ -45,13 +52,17 @@ if type(path) == list:
 # Size of each cell in the grid
 cellSize = int(width/len(maze[0])), int(height/len(maze))
 
+# Car
+car = pygame.image.load('car.png')
+car = pygame.transform.scale(car, (54,54))
 
+p = 0
 while True:
     # Event listener
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
 
-    # Grid drawing
+    # Draw the grid
     grid = []
 
     for i in range(len(maze)):
@@ -68,7 +79,7 @@ while True:
                 color = list(map(int, (white[0]/weight, white[1]/weight, white[2]/weight)))
             grid[i].append(pygame.draw.rect(screen, color, rect))
 
-    # Path drawing
+    # Draw the path
     newPath = []
 
     for point in path:
@@ -78,6 +89,16 @@ while True:
         newPath.append(newPoint)
 
     drawPath = pygame.draw.lines(screen, blue, False, newPath, 3)
-    
 
+    # Draw the car
+    try:
+        carPos = getCarPos(path[p])
+        p += 1
+        pygame.time.delay(500)
+    except IndexError:
+        continue
+
+    screen.blit(car, carPos)
+
+    # Update screen
     pygame.display.flip()
