@@ -55,6 +55,7 @@ cellSize = int(width/len(maze[0])), int(height/len(maze))
 # Car
 car = pygame.image.load('car.png')
 car = pygame.transform.scale(car, (54, 54))
+carPos = getMazePos(startPos)
 
 p = 0
 while True:
@@ -79,24 +80,26 @@ while True:
                 color = list(map(int, (white[0]/weight, white[1]/weight, white[2]/weight)))
             grid[i].append(pygame.draw.rect(screen, color, rect))
 
-    # Draw the path
-    newPath = []
+    # Delay at the beginning for maze inspection
+    if pygame.time.get_ticks() > 3500:
+        # Draw the path
+        newPath = []
 
-    for point in path:
-        y = int(point[0] * cellSize[1] + cellSize[1]/2)
-        x = int(point[1] * cellSize[0] + cellSize[0]/2)
-        newPoint = x, y
-        newPath.append(newPoint)
+        for point in path:
+            y = int(point[0] * cellSize[1] + cellSize[1]/2)
+            x = int(point[1] * cellSize[0] + cellSize[0]/2)
+            newPoint = x, y
+            newPath.append(newPoint)
 
-    drawPath = pygame.draw.lines(screen, blue, False, newPath, 3)
+        drawPath = pygame.draw.lines(screen, blue, False, newPath, 3)
 
-    # Draw the car
-    try:
-        carPos = getMazePos(path[p])
-        p += 1
-        pygame.time.delay(500)
-    except IndexError:
-        continue
+        # Draw the car
+        try:
+            carPos = getMazePos(path[p])
+            p += 1
+            pygame.time.delay(500)
+        except IndexError:
+            continue
 
     screen.blit(car, carPos)
 
