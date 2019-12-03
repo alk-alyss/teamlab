@@ -3,6 +3,56 @@ import pygame as pg
 from astar import astar
 pg.init()
 
+def getDimmensions():
+    global colorActive, colorInactive
+    text = ''
+    color = colorInactive
+    active = False
+    while True:
+        inputBox = pg.Rect(int(screen.get_width()/2-85), int(screen.get_height()/2-18), 140, 32)
+        for event in pg.event.get():
+            if event.type == pg.QUIT: sys.exit()
+            elif event.type == pg.MOUSEBUTTONDOWN:
+                # If the user clicked on the input box
+                if inputBox.collidepoint(event.pos):
+                    # Toggle the active variable.
+                    active = not active
+                else:
+                    active = False
+                # Change the current color of the input box.
+                if active: color = colorActive 
+                else: color = colorInactive
+            elif event.type == pg.KEYDOWN and active:
+                if event.key == pg.K_RETURN or event.key == pg.K_KP_ENTER:
+                    if text.isdigit():
+                        return int(text)
+                    else:
+                        print('Invalid. Input only a whole number.')
+                    text = ''
+                elif event.key == pg.K_BACKSPACE:
+                    text = text[:-1]
+                else:
+                    text += event.unicode
+            elif event.type == pg.VIDEORESIZE:
+                surface = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
+
+
+        screen.fill((30, 30, 30))
+
+        # Render the text.
+        textSurface = font.render(text, True, color)
+        labelSurface = font.render('Input maze size', True, color)
+
+        # Resize the box if the text is too long.
+        inputBox.w = max(200, textSurface.get_width()+10)
+
+        # Draw label and input box
+        screen.blit(textSurface, (inputBox.x + 5, inputBox.y + 5))
+        screen.blit(labelSurface, (inputBox.x, inputBox.y-50))
+        pg.draw.rect(screen, color, inputBox, 2)
+
+        pg.display.flip()
+
 def mazeToScreen(pos):
     '''Take a point on the maze and convert it to coordinates on the screen'''
     global cellSize
@@ -49,58 +99,8 @@ font = pg.font.Font(None, 32)
 # Pygame window creation
 screen = pg.display.set_mode((601, 501), pg.RESIZABLE)
 
-text = ''
-color = colorInactive
-active = False
-done = False
-while not done:
-    inputBox = pg.Rect(int(screen.get_width()/2-85), int(screen.get_height()/2-18), 140, 32)
-    for event in pg.event.get():
-        if event.type == pg.QUIT: sys.exit()
-        elif event.type == pg.MOUSEBUTTONDOWN:
-            # If the user clicked on the input box
-            if inputBox.collidepoint(event.pos):
-                # Toggle the active variable.
-                active = not active
-            else:
-                active = False
-            # Change the current color of the input box.
-            if active: color = colorActive 
-            else: color = colorInactive
-        elif event.type == pg.KEYDOWN and active:
-            if event.key == pg.K_RETURN or event.key == pg.K_KP_ENTER:
-                if text.isdigit():
-                    mazeSize = int(text)
-                    done = True
-                else:
-                    print('Invalid. Input only a whole number.')
-                text = ''
-            elif event.key == pg.K_BACKSPACE:
-                text = text[:-1]
-            else:
-                text += event.unicode
-        elif event.type == pg.VIDEORESIZE:
-            surface = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
-
-
-    screen.fill((30, 30, 30))
-
-    # Render the text.
-    textSurface = font.render(text, True, color)
-    labelSurface = font.render('Input maze size', True, color)
-
-    # Resize the box if the text is too long.
-    inputBox.w = max(200, textSurface.get_width()+10)
-
-    # Draw label and input box
-    screen.blit(textSurface, (inputBox.x + 5, inputBox.y + 5))
-    screen.blit(labelSurface, (inputBox.x, inputBox.y-50))
-    pg.draw.rect(screen, color, inputBox, 2)
-
-    pg.display.flip()
-
-
 # Generate maze
+mazeSize = getDimmensions()
 maze = generateMaze(mazeSize)
 
 # Generate empty start and end positions
@@ -132,21 +132,26 @@ while True:
             mousePos = pg.mouse.get_pos()
             if event.key == pg.K_s and not started: startPos = screenToMaze(mousePos)
             elif event.key == pg.K_e and not started: endPos = screenToMaze(mousePos)
+            elif event.key == pg.K_c and not started:
+                maze = generateMaze(mazeSize)
+                startPos = None, None
+                endPos = None, None
+            elif event.key == pg.K_r and not started:
+                mazeSize = getDimmensions()
+                maze = generateMaze(mazeSize)
+                startPos = None, None
+                endPos = None, None
+            elif (event.key in range(48, 58) or event.key in range(256, 266)) and not started:
+                if event.key in range(48, 58): weight = event.key - 48
+                else: weight = event.key - 256
+                mazePos = screenToMaze(mousePos)
+                setWeight(mazePos, weight)
             elif event.key == pg.K_RETURN and not started:
                 path = astar(maze, startPos, endPos)
                 started = True
             elif (event.key == pg.K_RETURN or event.key == pg.K_KP_ENTER) and finnished:
                 started = finnished = False
                 p = 0
-            elif (event.key in range(48, 58) or event.key in range(256, 266)) and not started:
-                if event.key in range(48, 58): weight = event.key - 48
-                else: weight = event.key - 256
-                mazePos = screenToMaze(mousePos)
-                setWeight(mazePos, weight)
-            elif event.key == pg.K_c and not started:
-                maze = generateMaze(mazeSize)
-                startPos = None, None
-                endPos = None, None
             elif event.key == pg.K_ESCAPE: sys.exit()
         elif event.type == pg.VIDEORESIZE:
             surface = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
