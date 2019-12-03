@@ -2,7 +2,7 @@ import sys, pygame
 from astar import astar
 pygame.init()
 
-def getMazePos(pos):
+def mazeToScreen(pos):
     '''Take a point on the maze and convert it to coordinates on the screen'''
     global cellSize
     posX = int(pos[1] * cellSize[0] + (cellSize[0]-car.get_size()[0])/2)
@@ -55,7 +55,7 @@ cellSize = int(width/len(maze[0])), int(height/len(maze))
 # Car
 car = pygame.image.load('car.png')
 car = pygame.transform.scale(car, (54, 54))
-carPos = getMazePos(startPos)
+carPos = mazeToScreen(startPos)
 
 p = 0
 while True:
@@ -95,7 +95,7 @@ while True:
 
         # Draw the car
         try:
-            carPos = getMazePos(path[p])
+            carPos = mazeToScreen(path[p])
             p += 1
             pygame.time.delay(500)
         except IndexError:
