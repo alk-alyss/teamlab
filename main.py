@@ -40,7 +40,7 @@ for i in range(mazeSize):
         maze[i].append(1)
 
 
-# Start and end positions
+# Generate empty start and end positions
 startPos = None, None
 endPos = None, None
 
