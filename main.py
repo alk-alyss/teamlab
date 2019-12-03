@@ -69,12 +69,13 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN and not started:
-            mousePos = pygame.mouse.get_pos()
-            mazePos = screenToMaze(mousePos)
-            if maze[mazePos[0]][mazePos[1]] == 1:
-                maze[mazePos[0]][mazePos[1]] = 0
-            else:
-                maze[mazePos[0]][mazePos[1]] = 1
+            if pygame.mouse.get_pressed() == (True, False, False):
+                mousePos = pygame.mouse.get_pos()
+                mazePos = screenToMaze(mousePos)
+                if maze[mazePos[0]][mazePos[1]] == 1:
+                    maze[mazePos[0]][mazePos[1]] = 0
+                else:
+                    maze[mazePos[0]][mazePos[1]] = 1
         elif event.type == pygame.KEYDOWN:
             mousePos = pygame.mouse.get_pos()
             if event.key == pygame.K_s and not started: startPos = screenToMaze(mousePos)
