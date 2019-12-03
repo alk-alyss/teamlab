@@ -121,14 +121,17 @@ endPos = None, None
 
 # Load car image
 car = pg.image.load('car.png')
-car = pg.transform.scale(car, (54, 54))
 
 p = 0
 started = finnished = False
 flipped = False
 while True:
     # Size of each cell in the grid
-    cellSize = int(screen.get_width()/len(maze[0])), int(screen.get_height()/len(maze))
+    cellSize = int(screen.get_width() / len(maze[0])), int(screen.get_height() / len(maze))
+    
+    # Resize car
+    carSize = min(cellSize[0]-5, cellSize[1]-5)
+    car = pg.transform.scale(car, (carSize, carSize))
 
     # Event listener
     for event in pg.event.get():
@@ -139,10 +142,13 @@ while True:
         elif event.type == pg.MOUSEBUTTONDOWN and not started:
             if event.button == 1:
                 mazePos = screenToMaze(event.pos)
-                if maze[mazePos[0]][mazePos[1]]:
-                    maze[mazePos[0]][mazePos[1]] = 0
-                else:
-                    maze[mazePos[0]][mazePos[1]] = 1
+                try:
+                    if maze[mazePos[0]][mazePos[1]]:
+                        maze[mazePos[0]][mazePos[1]] = 0
+                    else:
+                        maze[mazePos[0]][mazePos[1]] = 1
+                except IndexError:
+                    pass
         elif event.type == pg.KEYDOWN:
             mousePos = pg.mouse.get_pos()
             # When s is pressed set the starting point to the cell the mouse is currently in
