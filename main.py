@@ -90,6 +90,9 @@ while True:
                 endPos = None, None
             elif event.key == pygame.K_ESCAPE: sys.exit()
 
+    # Erase screen
+    screen.fill(black)
+
     # Draw the grid
     grid = []
 
