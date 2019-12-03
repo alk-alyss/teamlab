@@ -16,6 +16,10 @@ def screenToMaze(pos):
     mazePosY = int(mousePos[1] / cellSize[1])
     return mazePosY, mazePosX
 
+def setWeight(pos, weight):
+    '''Set the weight of the selected point in the maze'''
+    maze[pos[0]][pos[1]] = weight
+
 # Global variables
 size = width, height = 601, 501
 black = 0, 0, 0
@@ -64,15 +68,17 @@ while True:
             else:
                 maze[mazePos[0]][mazePos[1]] = 1
         elif event.type == pygame.KEYDOWN and not started:
-            if event.key == pygame.K_s:
-                mousePos = pygame.mouse.get_pos()
-                startPos = screenToMaze(mousePos)
-            elif event.key == pygame.K_e:
-                mousePos = pygame.mouse.get_pos()
-                endPos = screenToMaze(mousePos)
+            mousePos = pygame.mouse.get_pos()
+            if event.key == pygame.K_s: startPos = screenToMaze(mousePos)
+            elif event.key == pygame.K_e: endPos = screenToMaze(mousePos)
             elif event.key == pygame.K_RETURN:
                 path = astar(maze, startPos, endPos)
                 started = True
+            elif event.key in range(48, 58) or event.key in range(256, 266):
+                if event.key in range(48, 58): weight = event.key - 48
+                else: weight = event.key - 256
+                mazePos = screenToMaze(mousePos)
+                setWeight(mazePos, weight)
 
     # Draw the grid
     grid = []
