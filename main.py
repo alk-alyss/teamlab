@@ -31,17 +31,14 @@ blue = 0, 0, 255
 # Pygame window creation
 screen = pygame.display.set_mode(size)
 
-# The maze
-maze = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],  # # = weighted free space
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],  # (higher number = more difficult to pass from there)
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],  # 0 = wall
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
+# Generate empty maze
+maze = []
+mazeSize = 20
+for i in range(mazeSize):
+    maze.append([])
+    for j in range(mazeSize):
+        maze[i].append(1)
+
 
 # Start and end positions
 startPos = None, None
