@@ -175,8 +175,10 @@ while True:
                 setWeight(mazePos, weight)
             # When ENTER is pressed start the navigation
             elif event.key == pg.K_RETURN and not started:
-                path = astar(maze, startPos, endPos)
-                started = True
+                if startPos != (None, None) and endPos != (None, None):
+                    path = astar(maze, startPos, endPos)
+                    started = True
+                else: print('Please specify a start and end point')
             # When the navigation is over pressing ENTER enables editing
             elif (event.key == pg.K_RETURN or event.key == pg.K_KP_ENTER) and finnished:
                 started = finnished = False
