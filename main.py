@@ -130,7 +130,7 @@ while True:
     cellSize = int(screen.get_width() / len(maze[0])), int(screen.get_height() / len(maze))
     
     # Resize car
-    carSize = min(cellSize[0]-5, cellSize[1]-5)
+    carSize = int(min(cellSize[0], cellSize[1]))
     car = pg.transform.scale(car, (carSize, carSize))
 
     # Event listener
