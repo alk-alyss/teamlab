@@ -20,6 +20,16 @@ def setWeight(pos, weight):
     '''Set the weight of the selected point in the maze'''
     maze[pos[0]][pos[1]] = weight
 
+def generateMaze(size):
+    '''Generate empty maze of dimension size x size'''
+    maze = []
+    for i in range(size):
+        maze.append([])
+        for j in range(size):
+            maze[i].append(1)
+    return maze
+
+
 # Global variables
 size = width, height = 601, 501
 black = 0, 0, 0
@@ -31,14 +41,8 @@ blue = 0, 0, 255
 # Pygame window creation
 screen = pygame.display.set_mode(size)
 
-# Generate empty maze
-maze = []
-mazeSize = 20
-for i in range(mazeSize):
-    maze.append([])
-    for j in range(mazeSize):
-        maze[i].append(1)
-
+# Generate maze
+maze = generateMaze(10)
 
 # Generate empty start and end positions
 startPos = None, None
