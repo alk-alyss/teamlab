@@ -1,5 +1,7 @@
 # teamlab
 
+Instructions:
+
 When s is pressed set the starting point to the cell the mouse is currently
 
 When e is pressed set the end point to the cell the mouse is currently in
