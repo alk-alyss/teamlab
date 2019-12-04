@@ -1,6 +1,6 @@
 class Node():
     '''A class for storing node info'''
-    def __init__(self, pos=None, parent=None):
+    def __init__(self, pos= None, parent= None):
         self.pos = pos  # Position as (row, column) in maze
         self.parent = parent  # Parent node
         self.f = 0
