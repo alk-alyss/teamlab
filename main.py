@@ -6,9 +6,9 @@ pg.init()
 def getDimmensions():
     '''Input dialog for determining the maze size'''
     global colorActive, colorInactive
-    text = ''
-    color = colorInactive
-    active = False
+    text= ''
+    color= colorInactive
+    active= False
     while True:
         # Create the input box
         inputBox = pg.Rect(int(screen.get_width() / 2 - 85), int(screen.get_height() / 2 - 18), 140, 32)
