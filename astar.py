@@ -8,13 +8,14 @@ class Node():
         self.h = 0 # Predicted cost from current point to the end 
 
     def __eq__(self, other):
+        '''Compares the possitions'''
         return self.pos == other.pos
 
 
 def astar(maze, startPos, endPos):
     '''Returns a list of tuples as a path from the startPos to the endPos in the maze'''
-    openList = []  # Create the open list
-    closedList = []  # Create the closed list
+    openList = []  # Create the open list (σημεια που θα κοιταξει στο αμεσο μέλλον - γειτονικα του closeList) 
+    closedList = []  # Create the closed list (σημεια που εχει ηδη κοιταξει)
 
     startNode = Node(startPos) # Define the start node
     endNode = Node(endPos)  # Define the end node
