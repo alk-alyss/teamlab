@@ -3,7 +3,8 @@ import pygame as pg
 from astar import astar
 pg.init()
 
-def getDimmensions():
+
+def getDimmensions(): #first window
     '''Input dialog for determining the maze size'''
     global colorActive, colorInactive
     text= ''
