@@ -3,9 +3,9 @@ class Node():
     def __init__(self, pos= None, parent= None):
         self.pos = pos  # Position as (row, column) in maze
         self.parent = parent  # Parent node
-        self.f = 0
-        self.g = 0
-        self.h = 0
+        self.f = 0 # Sum of g & h
+        self.g = 0 # Cost from start to current point
+        self.h = 0 # Predicted cost from current point to the end 
 
     def __eq__(self, other):
         return self.pos == other.pos
