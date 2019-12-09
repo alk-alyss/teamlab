@@ -1,7 +1,9 @@
-import sys
 import pygame as pg
 from astar import astar
 pg.init()
+
+
+###################################### functions ######################################
 
 def getDimmensions():
     '''Input dialog for determining the maze size'''
@@ -44,8 +46,9 @@ def getDimmensions():
             elif event.type == pg.VIDEORESIZE:
                 surface = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
 
-        # Erase screen
-        screen.fill(grey)
+        # Background color
+        background_color=108,169,223
+        screen.fill(background_color)
 
         # Render the label and text
         textSurface = font.render(text, True, color)
@@ -97,6 +100,12 @@ def flip():
     car = pg.transform.flip(car, True, False)
     flipped = not flipped
 
+def menu():
+    '''Declares main menu buttons (start, options, help, about, exit)'''
+
+
+######################################## main ########################################
+
 # Global variables
 End = False # Fixed issue when exiting the app
 black = 0, 0, 0
@@ -105,19 +114,25 @@ red = 255, 0, 0
 green = 0, 255, 0
 blue = 0, 0, 255
 grey = 30, 30, 30
-colorInactive = pg.Color('lightskyblue3')
-colorActive = pg.Color('dodgerblue2')
+colorInactive = pg.Color('black')
+colorActive = pg.Color('white')
 font = pg.font.Font(None, 32)
 
 # Pygame window creation
-screen = pg.display.set_mode((601, 501), pg.RESIZABLE)
+screen = pg.display.set_mode((901, 701), pg.RESIZABLE)
+
+# Pygame window name 
+pg.display.set_caption("Fast Car")
 
 # Generate maze
+menu()
+'''
 try:
     mazeSize = getDimmensions()
     maze = generateMaze(mazeSize)
 except:
     End=True
+'''
 # Generate empty start and end positions
 startPos = None, None
 endPos = None, None
@@ -166,10 +181,16 @@ while not End:
                 endPos = None, None
             # When r is pressed clear maze and display dialog for maze size
             elif event.key == pg.K_r and not started:
+                
+                menu()
+                
                 mazeSize = getDimmensions()
                 maze = generateMaze(mazeSize)
                 startPos = None, None
                 endPos = None, None
+                
+
+
             # When 0-9 is pressed (including Numpad) set weigth for the cell the mouse is currently in
             # 0 = wall, 1-9 = increasing difficulty
             elif (event.key in range(48, 58) or event.key in range(256, 266)) and not started:
