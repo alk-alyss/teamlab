@@ -100,10 +100,6 @@ def flip():
     car = pg.transform.flip(car, True, False)
     flipped = not flipped
 
-def menu():
-    '''Declares main menu buttons (start, options, help, about, exit)'''
-
-
 ######################################## main ########################################
 
 # Global variables
@@ -125,14 +121,12 @@ screen = pg.display.set_mode((901, 701), pg.RESIZABLE)
 pg.display.set_caption("Fast Car")
 
 # Generate maze
-menu()
-'''
 try:
     mazeSize = getDimmensions()
     maze = generateMaze(mazeSize)
 except:
     End=True
-'''
+
 # Generate empty start and end positions
 startPos = None, None
 endPos = None, None
@@ -182,7 +176,6 @@ while not End:
             # When r is pressed clear maze and display dialog for maze size
             elif event.key == pg.K_r and not started:
                 
-                menu()
                 
                 mazeSize = getDimmensions()
                 maze = generateMaze(mazeSize)
