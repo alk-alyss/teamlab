@@ -3,7 +3,7 @@ from astar import astar
 pg.init()
 
 
-###################################### functions ######################################
+################################################### functions ###################################################
 
 def getDimmensions():
     '''Input dialog for determining the maze size'''
@@ -100,7 +100,7 @@ def flip():
     car = pg.transform.flip(car, True, False)
     flipped = not flipped
 
-######################################## main ########################################
+###################################################### main ######################################################
 
 # Global variables
 End = False # Fixed issue when exiting the app
@@ -251,7 +251,7 @@ while not End:
                     pass
                 carPos = newPos
                 p += 1
-                pg.time.delay(int(1000/(mazeSize/5)))
+                pg.time.delay(int(500/(mazeSize/5)))
             except IndexError:
                 finnished = True
 
