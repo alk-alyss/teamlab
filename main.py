@@ -7,16 +7,19 @@ pg.init()
 def getDimmensions(): #first window
     '''Input dialog for determining the maze size'''
     global colorActive, colorInactive
-    text= ''
+    text= '' 
     color= colorInactive
     active= False
+    
     while True:
+
         # Create the input box
         inputBox = pg.Rect(int(screen.get_width() / 2 - 85), int(screen.get_height() / 2 - 18), 140, 32)
 
         # Event listener
         for event in pg.event.get():
-            if event.type == pg.QUIT: sys.exit()
+            if event.type == pg.QUIT:
+                 sys.exit()
             elif event.type == pg.MOUSEBUTTONDOWN:
                 # When the input box is clicked toggle active flag
                 if inputBox.collidepoint(event.pos):
@@ -45,8 +48,9 @@ def getDimmensions(): #first window
             elif event.type == pg.VIDEORESIZE:
                 surface = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
 
-        # Erase screen
-        screen.fill(grey)
+        # Background Colour
+        backgraound_color=108,169,223
+        screen.fill(backgraound_color)
 
         # Render the label and text
         textSurface = font.render(text, True, color)
@@ -110,7 +114,10 @@ colorActive = pg.Color('dodgerblue2')
 font = pg.font.Font(None, 32)
 
 # Pygame window creation
-screen = pg.display.set_mode((601, 501), pg.RESIZABLE)
+screen = pg.display.set_mode((601, 501), pg.RESIZABLE)  
+
+# Pygame window name 
+pg.display.set_caption("Fast Car") 
 
 # Generate maze
 mazeSize = getDimmensions()
