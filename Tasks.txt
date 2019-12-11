@@ -2,7 +2,8 @@ Tasks:
 Presentation (Όλοι, Μυρτώ)
 Graphics (Νικόλας, Κυριάκος, Μυρτώ)
 Improve User Interface Options (Λάμπρος, Μιχάλης)
-add Clock
+
+- add timer to calculate route's duration
 
 how to update git :
 git status 
