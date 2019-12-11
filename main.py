@@ -202,7 +202,7 @@ while not End:
                 started = finnished = False
                 p = 0
             # Pressing ESC closes the window
-            elif event.key == pg.K_ESCAPE: end=True
+            elif event.key == pg.K_ESCAPE: End=True
         #  Window resizing
         elif event.type == pg.VIDEORESIZE and not started:
             surface = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
