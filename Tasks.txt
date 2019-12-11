@@ -1,0 +1,12 @@
+Tasks:
+Presentation (Όλοι, Μυρτώ)
+Graphics (Νικόλας, Κυριάκος, Μυρτώ)
+Improve User Interface Options (Λάμπρος, Μιχάλης)
+add Clock
+
+how to update git :
+git status 
+git pull
+git add .
+git commit -m “message”
+git push
