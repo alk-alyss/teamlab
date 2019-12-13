@@ -3,7 +3,7 @@ from astar import astar
 pg.init()
 
 
-############################################################################ functions ############################################################################
+############################### functions ###############################
 def fill(surface, color):
     """Fill all pixels of the surface with color, preserve transparency."""
     w, h = surface.get_size()
@@ -30,148 +30,120 @@ def mainMenu():
         inputBox = pg.Rect(int(screen.get_width() / 2 - 85), int(screen.get_height() / 2 - 18), 140, 32)
 
         # Create the start button (NEW) 
-        start = pg.image.load("start.png")
-        start=pg.transform.rotozoom(start,0, (0.12*(screen.get_width()/701 + screen.get_height()/601))/2)
-        startX=int(screen.get_width() / 2-start.get_size()[0]/2)
-        startY=int(4*screen.get_height() / 10-start.get_size()[1]/2)
+        startBtn = pg.image.load("start.png")
+        startBtn=pg.transform.rotozoom(startBtn,0, (0.12*(screen.get_width()/701 + screen.get_height()/601))/2)
+        startBtnX=int(screen.get_width() / 2-startBtn.get_size()[0]/2)
+        startBtnY=int(4*screen.get_height() / 10-startBtn.get_size()[1]/2)
 
         # Create the options button (NEW) 
-        options = pg.image.load("options.png")
-        options=pg.transform.rotozoom(options,0, (0.12*(screen.get_width()/701 + screen.get_height()/601))/2)
-        optionsX=int(screen.get_width() / 2-options.get_size()[0]/2)
-        optionsY=int(5*screen.get_height() / 10-options.get_size()[1]/2)
+        optionsBtn = pg.image.load("options.png")
+        optionsBtn=pg.transform.rotozoom(optionsBtn,0, (0.12*(screen.get_width()/701 + screen.get_height()/601))/2)
+        optionsBtnX=int(screen.get_width() / 2-optionsBtn.get_size()[0]/2)
+        optionsBtnY=int(5*screen.get_height() / 10-optionsBtn.get_size()[1]/2)
 
         # Create the help button (NEW) 
-        help = pg.image.load("help.png")
-        help=pg.transform.rotozoom(help,0, (0.12*(screen.get_width()/701 + screen.get_height()/601))/2)
-        helpX=int(screen.get_width() / 2-help.get_size()[0]/2)
-        helpY=int(6*screen.get_height() / 10-help.get_size()[1]/2)
+        helpBtn = pg.image.load("help.png")
+        helpBtn=pg.transform.rotozoom(helpBtn,0, (0.12*(screen.get_width()/701 + screen.get_height()/601))/2)
+        helpBtnX=int(screen.get_width() / 2-helpBtn.get_size()[0]/2)
+        helpBtnY=int(6*screen.get_height() / 10-helpBtn.get_size()[1]/2)
 
         # Create the about button (NEW) 
-        about = pg.image.load("about.png")
-        about=pg.transform.rotozoom(about,0, (0.12*(screen.get_width()/701 + screen.get_height()/601))/2)
-        aboutX=int(screen.get_width() / 2-about.get_size()[0]/2)
-        aboutY=int(7*screen.get_height() / 10-about.get_size()[1]/2)
+        aboutBtn = pg.image.load("about.png")
+        aboutBtn=pg.transform.rotozoom(aboutBtn,0, (0.12*(screen.get_width()/701 + screen.get_height()/601))/2)
+        aboutBtnX=int(screen.get_width() / 2-aboutBtn.get_size()[0]/2)
+        aboutBtnY=int(7*screen.get_height() / 10-aboutBtn.get_size()[1]/2)
 
         # Create the exit button (NEW) 
-        exit = pg.image.load("exit.png")
-        exit=pg.transform.rotozoom(exit,0, (0.12*(screen.get_width()/701 + screen.get_height()/601))/2)
-        exitX=int(screen.get_width() / 2-exit.get_size()[0]/2)
-        exitY=int(8*screen.get_height() / 10-exit.get_size()[1]/2)
-
-
-
-
-    
-        #####################################################################    (NEW)
-
-
-
+        exitBtn = pg.image.load("exit.png")
+        exitBtn=pg.transform.rotozoom(exitBtn,0, (0.12*(screen.get_width()/701 + screen.get_height()/601))/2)
+        exitBtnX=int(screen.get_width() / 2-exitBtn.get_size()[0]/2)
+        exitBtnY=int(8*screen.get_height() / 10-exitBtn.get_size()[1]/2)
 
 
         # Event listener
-
-
         for event in pg.event.get():
-            
-
             #StartButton                                            
             if event.type==4: # change color of buttos when mouse if on them     
                 x,y=event.pos                                                   
-                if start.get_rect().collidepoint([x-startX,y-startY]) :         
+                if startBtn.get_rect().collidepoint([x-startBtnX,y-startBtnY]) :         
                     colorStart = colorUp        
                 else:                                                           
                     colorStart =  colorStart1
-
             if event.type == 5: 
                 x,y=event.pos
-                if start.get_rect().collidepoint([x-startX, y-startY]):
+                if startBtn.get_rect().collidepoint([x-startBtnX, y-startBtnY]):
                     colorStart= colorClick  
-            
             if event.type==6:
                 x,y=event.pos
-                if start.get_rect().collidepoint([x-startX, y-startY]):
-                    colorStart= colorUp
+                if startBtn.get_rect().collidepoint([x-startBtnX, y-startBtnY]):
+                    colorStart = colorUp
+                    
             #OptionsButton
             if event.type==4: # change color of buttos when mouse if on them     
                 x,y=event.pos                                                   
-                if options.get_rect().collidepoint([x-optionsX,y-optionsY]) :         
+                if optionsBtn.get_rect().collidepoint([x-optionsBtnX,y-optionsBtnY]) :         
                     colorOptions = colorUp        
                 else:                                                           
                     colorOptions =  colorStart1
-
             if event.type == 5: 
                 x,y=event.pos
-                if options.get_rect().collidepoint([x-optionsX, y-optionsY]):
+                if optionsBtn.get_rect().collidepoint([x-optionsBtnX, y-optionsBtnY]):
                     colorOptions= colorClick  
-            
             if event.type==6:
                 x,y=event.pos
-                if options.get_rect().collidepoint([x-optionsX, y-optionsY]):
+                if optionsBtn.get_rect().collidepoint([x-optionsBtnX, y-optionsBtnY]):
                     colorOptions= colorUp
-                    optionsL=not optionsL
+                    optionsL = not optionsL
+                    
             #HelpButton
             if event.type==4: # change color of buttos when mouse if on them     
                 x,y=event.pos                                                   
-                if help.get_rect().collidepoint([x-helpX,y-helpY]) :         
+                if helpBtn.get_rect().collidepoint([x-helpBtnX,y-helpBtnY]) :         
                     colorHelp = colorUp        
                 else:                                                           
                     colorHelp =  colorStart1
-
             if event.type == 5: 
                 x,y=event.pos
-                if help.get_rect().collidepoint([x-helpX, y-helpY]):
+                if helpBtn.get_rect().collidepoint([x-helpBtnX, y-helpBtnY]):
                     colorHelp= colorClick  
-            
             if event.type==6:
                 x,y=event.pos
-                if help.get_rect().collidepoint([x-helpX, y-helpY]):
+                if helpBtn.get_rect().collidepoint([x-helpBtnX, y-helpBtnY]):
                     colorHelp= colorUp   
 
             #AboutButton
             if event.type==4: # change color of buttos when mouse if on them     
                 x,y=event.pos                                                   
-                if about.get_rect().collidepoint([x-aboutX,y-aboutY]) :         
+                if aboutBtn.get_rect().collidepoint([x-aboutBtnX,y-aboutBtnY]) :         
                     colorAbout = colorUp        
                 else:                                                           
                     colorAbout =  colorStart1
-
             if event.type == 5: 
                 x,y=event.pos
-                if about.get_rect().collidepoint([x-aboutX, y-aboutY]):
+                if aboutBtn.get_rect().collidepoint([x-aboutBtnX, y-aboutBtnY]):
                     colorAbout= colorClick  
-            
             if event.type==6:
                 x,y=event.pos
-                if about.get_rect().collidepoint([x-aboutX, y-aboutY]):
+                if aboutBtn.get_rect().collidepoint([x-aboutBtnX, y-aboutBtnY]):
                     colorAbout= colorUp
 
             #ExitButton
             if event.type==4: # change color of buttos when mouse if on them     
                 x,y=event.pos                                                   
-                if exit.get_rect().collidepoint([x-exitX,y-exitY]) :         
+                if exitBtn.get_rect().collidepoint([x-exitBtnX,y-exitBtnY]) :         
                     colorExit = colorUp        
                 else:                                                           
                     colorExit =  colorStart1
-
             if event.type == 5: 
                 x,y=event.pos
-                if exit.get_rect().collidepoint([x-exitX, y-exitY]):
+                if exitBtn.get_rect().collidepoint([x-exitBtnX, y-exitBtnY]):
                     colorExit= colorClick  
-            
             if event.type==6:
                 x,y=event.pos
-                if exit.get_rect().collidepoint([x-exitX, y-exitY]):
+                if exitBtn.get_rect().collidepoint([x-exitBtnX, y-exitBtnY]):
                     colorExit= colorUp  
 
-           
-             	                                 
-            #####################################################################
-
-
             if event.type == pg.QUIT: End=True
-
-
 
 
 
@@ -215,14 +187,7 @@ def mainMenu():
         screen.fill(background_color)
 
         
-        
-
-
-        
-
-
-
-        #####################################################################   (NEW)
+        # Draw main menu
         if not optionsL :
             #Claim Copyrights
             TextCC1 = font.render('Copyright © 2019 A.Alyssandrakis, M.Kaipis, L.Konstantellos, M.Lagou, N.Perreas, K.Stratakos.', True, [0,0,0])
@@ -231,25 +196,27 @@ def mainMenu():
             TextCC2 = font.render('All Rights Reserved.', True, [0,0,0])
             screen.blit(TextCC2, (screen.get_width() / 2-TextCC2.get_size()[0]/2,9.5*screen.get_height() / 10-TextCC2.get_size()[1]/2))
 
-            # Drow the start button                                          
-            fill(start,colorStart)    
-            screen.blit(start,[startX,startY])   
+            # Draw the start button                                          
+            fill(startBtn,colorStart)    
+            screen.blit(startBtn,[startBtnX,startBtnY])   
 
-            # Drow the options button                                          
-            fill(options,colorOptions)    
-            screen.blit(options,[optionsX,optionsY])  
+            # Draw the options button                                          
+            fill(optionsBtn,colorOptions)    
+            screen.blit(optionsBtn,[optionsBtnX,optionsBtnY])  
 
-            # Drow the help button                                          
-            fill(help,colorHelp)    
-            screen.blit(help,[helpX,helpY])  
+            # Draw the help button                                          
+            fill(helpBtn,colorHelp)    
+            screen.blit(helpBtn,[helpBtnX,helpBtnY])  
 
-            # Drow the about button                                          
-            fill(about,colorAbout)    
-            screen.blit(about,[aboutX,aboutY])  
+            # Draw the about button                                          
+            fill(aboutBtn,colorAbout)    
+            screen.blit(aboutBtn,[aboutBtnX,aboutBtnY])  
             
-            # Drow the exit button                                          
-            fill(exit,colorExit)    
-            screen.blit(exit,[exitX,exitY])  
+            # Draw the exit button                                          
+            fill(exitBtn,colorExit)    
+            screen.blit(exitBtn, [exitBtnX, exitBtnY])
+
+        # Draw maze input dialog  
         else:
             # Draw input box
             pg.draw.rect(screen, color, inputBox, 2)
@@ -263,9 +230,6 @@ def mainMenu():
             # Move the label and text to correct spot
             screen.blit(textSurface, (inputBox.x + 5, inputBox.y + 5))
             screen.blit(labelSurface, (inputBox.x, inputBox.y - 50))
-
-
-        #####################################################################
 
 
         # Update display
@@ -304,7 +268,7 @@ def flip():
     car = pg.transform.flip(car, True, False)
     flipped = not flipped
 
-################################################################################ main ################################################################################
+############################### main ###############################
 
 # Global variables
 End = False # Fixed issue when exiting the app
@@ -404,7 +368,7 @@ while not End:
                 if startPos != (None, None) and endPos != (None, None):
                     path = astar(maze, startPos, endPos)
                     started = True
-                else: print('Please specify a start and end point')
+                else: print('Please specify a startBtn and end point')
             # When the navigation is over pressing ENTER enables editing
             elif (event.key == pg.K_RETURN or event.key == pg.K_KP_ENTER) and finnished:
                 started = finnished = False

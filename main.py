@@ -3,8 +3,7 @@ from astar import astar
 pg.init()
 
 
-################################################### functions ###################################################
-
+############################### functions ###############################
 def mainMenu():
     '''Input dialog for determining the maze size'''
     global colorActive, colorInactive, End
@@ -100,7 +99,7 @@ def flip():
     car = pg.transform.flip(car, True, False)
     flipped = not flipped
 
-###################################################### main ######################################################
+############################### main ###############################
 
 # Global variables
 End = False # Fixed issue when exiting the app
