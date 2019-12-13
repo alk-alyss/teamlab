@@ -5,7 +5,7 @@ pg.init()
 
 ################################################### functions ###################################################
 
-def getDimmensions():
+def mainMenu():
     '''Input dialog for determining the maze size'''
     global colorActive, colorInactive, End
     text= ''
@@ -122,7 +122,7 @@ pg.display.set_caption("Fast Car")
 
 # Generate maze
 try:
-    mazeSize = getDimmensions()
+    mazeSize = mainMenu()
     maze = generateMaze(mazeSize)
 except:
     End=True
@@ -177,7 +177,7 @@ while not End:
             elif event.key == pg.K_r and not started:
                 
                 
-                mazeSize = getDimmensions()
+                mazeSize = mainMenu()
                 maze = generateMaze(mazeSize)
                 startPos = None, None
                 endPos = None, None

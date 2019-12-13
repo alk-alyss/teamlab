@@ -13,7 +13,7 @@ def fill(surface, color):
             a = surface.get_at((x, y))[3]
             surface.set_at((x, y), pg.Color(r, g, b, a))
 
-def getDimmensions():
+def mainMenu():
     '''Input dialog for determining the maze size'''
     global colorActive, colorInactive, End,maze
     text= ''
@@ -327,7 +327,7 @@ pg.display.set_caption("Fast Car")
 # Generate maze
 
 try:
-    mazeSize = getDimmensions()
+    mazeSize = mainMenu()
     maze = generateMaze(mazeSize)
 except :
     End=True
@@ -386,7 +386,7 @@ while not End:
             elif event.key == pg.K_r and not started:
                 
                 maze = generateMaze(6)
-                mazeSize = getDimmensions()
+                mazeSize = mainMenu()
                 startPos = None, None
                 endPos = None, None
                 
