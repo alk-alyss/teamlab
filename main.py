@@ -17,7 +17,7 @@ def screenToMaze(pos):
     mazePosY = int(pos[1] / cellSize[1])
     return mazePosY, mazePosX
 
-def setWeight(pos, weight, maze):
+def setWeight(pos, weight):
     '''Set the weight of the selected point in the maze'''
     maze[pos[0]][pos[1]] = weight
 
@@ -71,9 +71,9 @@ while not End:
         if event.type == pg.QUIT:
             End = True
 
-        '''When the left mouse button is pressed toggle the weight 
-        for the cell the mouse is currently in between 0 and 1
-        If the cell has any other weight clicking will make it a wall'''
+            '''When the left mouse button is pressed toggle the weight 
+            for the cell the mouse is currently in between 0 and 1
+            If the cell has any other weight clicking will make it a wall'''
 
         elif event.type == pg.MOUSEBUTTONDOWN and not started:
             if event.button == 1:
