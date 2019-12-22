@@ -55,7 +55,7 @@ def mainMenu():
     text = ''
     colorInput = colorInactive
     activeInputBox = False
-    optionsL = False
+    state = 'main'
 
     while not End:
         # Create input box
@@ -76,7 +76,7 @@ def mainMenu():
             # When mouse is pressed change button color, handle events
             if event.type == pg.MOUSEBUTTONDOWN:
                 # When in main menu
-                if not optionsL:
+                if state == 'main':
                     # Start button
                     if startBtn.collide(event.pos):
                         startBtn.color = colorClick
@@ -91,15 +91,17 @@ def mainMenu():
                     # Options button
                     elif optionsBtn.collide(event.pos):
                         optionsBtn.color = colorClick
-                        optionsL = not optionsL
+                        state = 'options'
 
                     # Help button
                     elif helpBtn.collide(event.pos):
                         helpBtn.color = colorClick
+                        # state = 'help'
 
                     # About button
                     elif aboutBtn.collide(event.pos):
                         aboutBtn.color = colorClick
+                        # state = 'about'
 
                     # Exit button
                     elif exitBtn.collide(event.pos):
@@ -107,7 +109,7 @@ def mainMenu():
                         sys.exit()
 
                 # When in options menu
-                else:
+                elif state == 'options':
                     # Make input box active when clicked
                     if inputBox.collidepoint(event.pos):
                         activeInputBox = not activeInputBox
@@ -131,10 +133,10 @@ def mainMenu():
                 elif exitBtn.collide(event.pos):
                     exitBtn.color = colorBtn
 
-            if event.type == pg.KEYDOWN and optionsL:
+            if event.type == pg.KEYDOWN and state == 'options':
                 # When ENTER or ESC is pressed return to main menu
                 if event.key == pg.K_RETURN or event.key == pg.K_KP_ENTER or event.key == pg.K_ESCAPE:
-                    optionsL = not optionsL
+                    state = 'main'
                 # When BACKSPACE is pressed erase characters from the text input
                 elif event.key == pg.K_BACKSPACE and activeInputBox:
                     text = text[:-1]
@@ -150,7 +152,7 @@ def mainMenu():
         screen.fill(menuBG)
 
         # Draw main menu
-        if not optionsL:
+        if state == 'main':
             # change color of buttons when moubackground_color = 108, 169, 223se is on them
             mousePos = pg.mouse.get_pos()
             if startBtn.collide(mousePos):
@@ -195,7 +197,7 @@ def mainMenu():
             exitBtn.draw()
 
         # Draw maze size input dialog
-        else:
+        elif state == 'options':
             # Draw input box
             colorInput = colorActive if activeInputBox else colorInactive
             pg.draw.rect(screen, colorInput, inputBox, 2)
