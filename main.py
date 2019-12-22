@@ -16,7 +16,8 @@ colorActive = white  # Active input color
 colorBtn = black  # Button color
 colorOver = 30, 18, 138  # Button hover color
 colorClick = 255, 255, 255  # Button click color
-font = pg.font.Font(None, 26)  # Default font
+inputFont = pg.font.Font(None, 46)  # Input font
+creditFont = pg.font.Font(None, 26)  # Credits font
 End = False  # End flag
 
 class Button:
@@ -25,7 +26,7 @@ class Button:
         self.srfc = pg.image.load(image)
         self.srfc = pg.transform.rotozoom(
             self.srfc, 0, (0.12*(screen.get_width()/701+screen.get_height()/601))/2)
-        self.x = int(screen.get_width() / 2-self.srfc.get_size()[0]/2)
+        self.x = int(screen.get_width()/2 - self.srfc.get_size()[0]/2)
         self.y = int((index + 2) * screen.get_height() /
                      10 - self.srfc.get_size()[1] / 2)
         self.color = color
@@ -59,8 +60,9 @@ def mainMenu():
 
     while not End:
         # Create input box
-        inputBox = pg.Rect(int(screen.get_width() / 2 - 85),
-                           int(screen.get_height() / 2 - 18), 140, 32)
+        inputSize = 300, 50
+        inputBox = pg.Rect(int(screen.get_width() / 2 - inputSize[0]/2),
+                           int(screen.get_height() / 2 - inputSize[1]/2), inputSize[0], inputSize[1])
 
         # Create buttons
         startBtn = Button("start.png", 1)
@@ -68,6 +70,7 @@ def mainMenu():
         helpBtn = Button("help.png", 3)
         aboutBtn = Button("about.png", 4)
         exitBtn = Button("exit.png", 5)
+        returnBtn = Button("return.png", 5)
 
         # Event listener
         for event in pg.event.get():
@@ -113,6 +116,13 @@ def mainMenu():
                     # Make input box active when clicked
                     if inputBox.collidepoint(event.pos):
                         activeInputBox = not activeInputBox
+
+                    # Rerutn button
+                    elif returnBtn.collide(event.pos):
+                        returnBtn.color = colorClick
+                        state = 'main'
+                        activeInputBox = False
+
                     else:
                         activeInputBox = False
 
@@ -133,10 +143,14 @@ def mainMenu():
                 elif exitBtn.collide(event.pos):
                     exitBtn.color = colorBtn
 
+                elif returnBtn.collide(event.pos):
+                    returnBtn.color = colorBtn
+
             if event.type == pg.KEYDOWN and state == 'options':
                 # When ENTER or ESC is pressed return to main menu
                 if event.key == pg.K_RETURN or event.key == pg.K_KP_ENTER or event.key == pg.K_ESCAPE:
                     state = 'main'
+                    activeInputBox = False
                 # When BACKSPACE is pressed erase characters from the text input
                 elif event.key == pg.K_BACKSPACE and activeInputBox:
                     text = text[:-1]
@@ -153,7 +167,7 @@ def mainMenu():
 
         # Draw main menu
         if state == 'main':
-            # change color of buttons when moubackground_color = 108, 169, 223se is on them
+            # change color of buttons when mouse is on them
             mousePos = pg.mouse.get_pos()
             if startBtn.collide(mousePos):
                 startBtn.color = colorOver
@@ -181,11 +195,11 @@ def mainMenu():
                 exitBtn.color = colorBtn
 
             # Claim Copyrights
-            TextCC1 = font.render('Copyright © 2019 A.Alyssandrakis, M.Kaipis, L.Konstantellos, M.Lagou, N.Perreas, K.Stratakos.', True, [0,0,0])
+            TextCC1 = creditFont.render('Copyright © 2019 A.Alyssandrakis, M.Kaipis, L.Konstantellos, M.Lagou, N.Perreas, K.Stratakos.', True, [0,0,0])
             screen.blit(TextCC1, (int(screen.get_width() / 2 - TextCC1.get_size()[0] / 2),
                                 int(9*screen.get_height() / 10-TextCC1.get_size()[1]/2)))
 
-            TextCC2 = font.render('All Rights Reserved.', True, [0,0,0])
+            TextCC2 = creditFont.render('All Rights Reserved.', True, [0,0,0])
             screen.blit(TextCC2, (int(screen.get_width() / 2 - TextCC2.get_size()[0] / 2),
                                 int(9.5*screen.get_height() / 10-TextCC2.get_size()[1]/2)))
 
@@ -198,17 +212,26 @@ def mainMenu():
 
         # Draw maze size input dialog
         elif state == 'options':
+            mousePos = pg.mouse.get_pos()
+            if returnBtn.collide(mousePos):
+                returnBtn.color = colorOver
+            else:
+                returnBtn.color = colorBtn
+
             # Draw input box
             colorInput = colorActive if activeInputBox else colorInactive
             pg.draw.rect(screen, colorInput, inputBox, 2)
 
             # Render the label and text
-            textSurface = font.render(text, True, colorInput)
-            labelSurface = font.render('Input maze size', True, colorInput)
+            textSurface = inputFont.render(text, True, colorBtn)
+            labelSurface = inputFont.render('Input maze size', True, colorBtn)
 
             # Move the label and text to correct spot
-            screen.blit(textSurface, (inputBox.x + 5, inputBox.y + 5))
+            textSize = inputFont.size(text)
+            screen.blit(textSurface, (inputBox.x + 5, int(inputBox.y + inputSize[1]/2 - textSize[1]/2)))
             screen.blit(labelSurface, (inputBox.x, inputBox.y - 50))
+
+            returnBtn.draw()
 
         # Update display
         pg.display.flip()
