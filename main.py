@@ -53,6 +53,7 @@ def fill(surface, color):
 
 def mainMenu():
     '''Input dialog for determining the maze size'''
+    global End
     text = ''
     colorInput = colorInactive
     activeInputBox = False
@@ -65,16 +66,18 @@ def mainMenu():
                            int(screen.get_height() / 2 - inputSize[1]/2), inputSize[0], inputSize[1])
 
         # Create buttons
-        startBtn = Button("start.png", 1)
-        optionsBtn = Button("options.png", 2)
-        helpBtn = Button("help.png", 3)
-        aboutBtn = Button("about.png", 4)
-        exitBtn = Button("exit.png", 5)
-        returnBtn = Button("return.png", 5)
+        startBtn = Button("img/start.png", 1)
+        optionsBtn = Button("img/options.png", 2)
+        helpBtn = Button("img/help.png", 3)
+        aboutBtn = Button("img/about.png", 4)
+        exitBtn = Button("img/exit.png", 5)
+        returnBtn = Button("img/return.png", 5)
 
         # Event listener
         for event in pg.event.get():
-            if event.type == pg.QUIT: quitGame()
+            if event.type == pg.QUIT: 
+                End=True
+                return 0
 
             # When mouse is pressed change button color, handle events
             if event.type == pg.MOUSEBUTTONDOWN:
@@ -109,7 +112,8 @@ def mainMenu():
                     # Exit button
                     elif exitBtn.collide(event.pos):
                         exitBtn.color = colorClick
-                        sys.exit()
+                        End=True
+                        return 0
 
                 # When in options menu
                 elif state == 'options':
@@ -162,9 +166,9 @@ def mainMenu():
             elif event.type == pg.VIDEORESIZE:
                 surface = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
 
-        # Background color
+        # Background color    
         screen.fill(menuBG)
-
+       
         # Draw main menu
         if state == 'main':
             # change color of buttons when mouse is on them
@@ -270,9 +274,8 @@ def flip():
     car = pg.transform.flip(car, True, False)
     flipped = not flipped
 
-def quitGame():
-    pg.quit()
-    sys.exit()
+
+End=False
 
 # Pygame window creation + window name
 screen = pg.display.set_mode((901, 701), pg.RESIZABLE)
@@ -287,7 +290,7 @@ startPos = None, None
 endPos = None, None
 
 # Load car image
-car = pg.image.load('car.png')
+car = pg.image.load('img/car.png')
 
 p = 0
 started = finished = False
@@ -431,5 +434,4 @@ while not End:
 
     # Update screen
     pg.display.flip()
-
-quitGame()
+pg.quit()
