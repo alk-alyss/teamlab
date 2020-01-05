@@ -7,16 +7,20 @@ def quitGame():
     pg.quit()
     sys.exit()
 
-def multiLineText(text, surface):
+def multiLineText(text, surface, pos):
     text = text.split('\n')
     for line in text:
         if text.index(line) == 0:
-            textSurface = g.aboutH1.render(line, True, g.colorBtn)
-            textSize = g.aboutH1.size(line)
+            textSurface = g.infoH1.render(line, True, g.colorBtn)
+            textSize = g.infoH1.size(line)
         else:
-            textSurface = g.creditBody.render(line, True, g.colorBtn)
-            textSize = g.creditBody.size(line)
-        position = surface.get_width()/2 - textSize[0]/2, surface.get_height()/10 + text.index(line) * textSize[1]
+            textSurface = g.infoBody.render(line, True, g.colorBtn)
+            textSize = g.infoBody.size(line)
+        if pos == 'center':
+            position = surface.get_width() / 2 - textSize[0] / 2, surface.get_height() / 10 + text.index(line) * textSize[1]
+        elif pos == 'left':
+            position = surface.get_width() / 8, surface.get_height() / 10 + text.index(line) * textSize[1]
+
         surface.blit(textSurface, position)
 
 
@@ -253,7 +257,7 @@ class Menu:
         '''Help screen'''
 
         # Create button
-        returnBtn = Button("img/return.png", 6, self.screen)
+        returnBtn = Button("img/return.png", 7, self.screen)
 
         while True:
             for event in pg.event.get():
@@ -271,6 +275,9 @@ class Menu:
 
             # Background color
             self.screen.fill(g.menuBG)
+
+            # Draw text
+            multiLineText(g.helpText, self.screen, 'left')
 
             # Draw button
             returnBtn.draw()
@@ -303,7 +310,7 @@ class Menu:
             self.screen.fill(g.menuBG)
 
             # Draw text
-            multiLineText(g.aboutText, self.screen)
+            multiLineText(g.aboutText, self.screen, 'center')
 
             # Draw button
             returnBtn.draw()

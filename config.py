@@ -15,8 +15,34 @@ colorBtn = black  # Button color
 colorOver = 30, 18, 138  # Button hover color
 colorClick = 255, 255, 255  # Button click color
 inputFont = pg.font.Font(None, 46)  # Input font
-aboutH1 = pg.font.Font(None, 46)  # About header font
-aboutBody = pg.font.Font(None, 32)  # About body font
+
+infoH1 = pg.font.Font(None, 46)  # Info header font
+infoBody = pg.font.Font(None, 32)  # Info body font
+
+helpText = '''Instructions
+
+
+Press s to set the cell the mouse is currently in as the starting point
+
+Press e to set the cell the mouse is currently in as the end point
+
+Press c to clear the maze
+
+Press m to return to the Main Menu
+
+Set the weigth of the cell the mouse is in by pressing the numbers 0-9 
+(including Numpad)
+
+0 = wall, 1-9 = increasing difficulty
+
+Press ENTER to start the navigation
+
+When the navigation is over pressing ENTER enables editing
+
+Pressing ESC closes the window
+
+'''
+
 aboutText = '''Virtual car navigation
 
 
