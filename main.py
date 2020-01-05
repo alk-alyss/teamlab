@@ -99,8 +99,8 @@ while not End:
                 maze = generateMaze(mazeSize)
                 startPos = None, None
                 endPos = None, None
-            # When r is pressed clear maze and display dialog for maze size
-            elif event.key == pg.K_r and not started:
+            # When m is pressed return to Main Menu
+            elif event.key == pg.K_m and not started:
                 mazeSize = menu.Menu(screen).mazeSize
                 maze = generateMaze(mazeSize)
                 startPos = None, None

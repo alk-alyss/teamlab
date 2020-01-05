@@ -8,7 +8,7 @@ When e is pressed set the end point to the cell the mouse is currently in
 
 When c is pressed clear the maze
 
-When r is pressed clear the maze and display dialog for maze size
+When m is pressed clear the maze and display dialog for maze size
 
 When 0-9 is pressed (including Numpad) set weigth for the cell the mouse is in
 
