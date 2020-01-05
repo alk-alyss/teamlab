@@ -1,5 +1,13 @@
 # Virtual car navigation
 
+## Requirements:
+
+- Python 3 with pip installed
+
+- Run this command from inside the folder to install required modules
+
+        python -m pip install -r requirements.txt
+
 ## Instructions:
 
 - Press s to set the cell the mouse is currently in as the starting point
