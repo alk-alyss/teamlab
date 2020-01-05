@@ -1,21 +1,21 @@
-# teamlab
+# Virtual car navigation
 
-Instructions:
+## Instructions:
 
-When s is pressed set the starting point to the cell the mouse is currently in
+- Press s to set the cell the mouse is currently in as the starting point
 
-When e is pressed set the end point to the cell the mouse is currently in
+- Press e to set the cell the mouse is currently in as the end point
 
-When c is pressed clear the maze
+- Press c to clear the maze
 
-When r is pressed clear the maze and display dialog for maze size
+- Press m to return to the Main Menu
 
-When 0-9 is pressed (including Numpad) set weigth for the cell the mouse is in
+- Set the weigth of the cell the mouse is in by pressing the numbers 0-9 (including Numpad)
 
-0 = wall, 1-9 = increasing difficulty
+- 0 = wall, 1-9 = increasing difficulty
 
-When ENTER is pressed start the navigation
+- Press ENTER to start the navigation
 
-When the navigation is over pressing ENTER enables editing
+- When the navigation is over pressing ENTER enables editing
 
-Pressing ESC closes the window
+- Pressing ESC closes the window

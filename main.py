@@ -1,256 +1,18 @@
 import pygame as pg
+import config as g
 import sys
+import menu
 from astar import astar
 pg.init()
 
-# Global variables
-black = 0, 0, 0  # Black color
-white = 255, 255, 255  # White color
-red = 255, 0, 0  # Red color
-green = 0, 255, 0  # Green color
-blue = 0, 0, 255  # Blue color
-grey = 30, 30, 30  # Grey color
-menuBG = 108, 169, 223  # Menu background
-colorInactive = black  # Inactive input color
-colorActive = white  # Active input color
-colorBtn = black  # Button color
-colorOver = 30, 18, 138  # Button hover color
-colorClick = 255, 255, 255  # Button click color
-inputFont = pg.font.Font(None, 46)  # Input font
-creditFont = pg.font.Font(None, 26)  # Credits font
-End = False  # End flag
-
-class Button:
-    '''Button class'''
-    def __init__(self, image, index, color=colorBtn):
-        self.srfc = pg.image.load(image)
-        self.srfc = pg.transform.rotozoom(
-            self.srfc, 0, (0.12*(screen.get_width()/701+screen.get_height()/601))/2)
-        self.x = int(screen.get_width()/2 - self.srfc.get_size()[0]/2)
-        self.y = int((index + 2) * screen.get_height() /
-                     10 - self.srfc.get_size()[1] / 2)
-        self.color = color
-
-    '''Check for collision'''
-    def collide(self, pos):
-        return self.srfc.get_rect().collidepoint([pos[0] - self.x, pos[1] - self.y])
-
-    '''Draw button'''
-    def draw(self):
-        fill(self.srfc, self.color)
-        screen.blit(self.srfc, [self.x, self.y])
-
-
-def fill(surface, color):
-    '''Fill all pixels of the surface with color, preserve transparency.'''
-    w, h = surface.get_size()
-    r, g, b = color
-    for x in range(w):
-        for y in range(h):
-            a = surface.get_at((x, y))[3]
-            surface.set_at((x, y), pg.Color(r, g, b, a))
-
-
-def mainMenu():
-    '''Input dialog for determining the maze size'''
-    global End
-    text = ''
-    colorInput = colorInactive
-    activeInputBox = False
-    state = 'main'
-
-    while not End:
-        # Create input box
-        inputSize = 300, 50
-        inputBox = pg.Rect(int(screen.get_width() / 2 - inputSize[0]/2),
-                           int(screen.get_height() / 2 - inputSize[1]/2), inputSize[0], inputSize[1])
-
-        # Create buttons
-        startBtn = Button("img/start.png", 1)
-        optionsBtn = Button("img/options.png", 2)
-        helpBtn = Button("img/help.png", 3)
-        aboutBtn = Button("img/about.png", 4)
-        exitBtn = Button("img/exit.png", 5)
-        returnBtn = Button("img/return.png", 5)
-
-        # Event listener
-        for event in pg.event.get():
-            if event.type == pg.QUIT: 
-                End=True
-                return 0
-
-            # When mouse is pressed change button color, handle events
-            if event.type == pg.MOUSEBUTTONDOWN:
-                # When in main menu
-                if state == 'main':
-                    # Start button
-                    if startBtn.collide(event.pos):
-                        startBtn.color = colorClick
-                        if not text:
-                            return 10
-                        elif text.isdigit():
-                            return int(text)
-                        else:
-                            print('Invalid. Input only a whole number.')
-                        text = ''
-
-                    # Options button
-                    elif optionsBtn.collide(event.pos):
-                        optionsBtn.color = colorClick
-                        state = 'options'
-
-                    # Help button
-                    elif helpBtn.collide(event.pos):
-                        helpBtn.color = colorClick
-                        # state = 'help'
-
-                    # About button
-                    elif aboutBtn.collide(event.pos):
-                        aboutBtn.color = colorClick
-                        # state = 'about'
-
-                    # Exit button
-                    elif exitBtn.collide(event.pos):
-                        exitBtn.color = colorClick
-                        End=True
-                        return 0
-
-                # When in options menu
-                elif state == 'options':
-                    # Make input box active when clicked
-                    if inputBox.collidepoint(event.pos):
-                        activeInputBox = not activeInputBox
-
-                    # Rerutn button
-                    elif returnBtn.collide(event.pos):
-                        returnBtn.color = colorClick
-                        state = 'main'
-                        activeInputBox = False
-
-                    else:
-                        activeInputBox = False
-
-            # When mouse is released revert button color
-            if event.type == pg.MOUSEBUTTONUP:
-                if startBtn.collide(event.pos):
-                    startBtn.color = colorBtn
-
-                elif optionsBtn.collide(event.pos):
-                    optionsBtn.color = colorBtn
-
-                elif helpBtn.collide(event.pos):
-                    helpBtn.color = colorBtn
-
-                elif aboutBtn.collide(event.pos):
-                    aboutBtn.color = colorBtn
-
-                elif exitBtn.collide(event.pos):
-                    exitBtn.color = colorBtn
-
-                elif returnBtn.collide(event.pos):
-                    returnBtn.color = colorBtn
-
-            if event.type == pg.KEYDOWN and state == 'options':
-                # When ENTER or ESC is pressed return to main menu
-                if event.key == pg.K_RETURN or event.key == pg.K_KP_ENTER or event.key == pg.K_ESCAPE:
-                    state = 'main'
-                    activeInputBox = False
-                # When BACKSPACE is pressed erase characters from the text input
-                elif event.key == pg.K_BACKSPACE and activeInputBox:
-                    text = text[:-1]
-                # When any other character key is pressed add the character to the text input
-                elif (event.key in range(48, 58) or event.key in range(256, 266)) and activeInputBox:
-                    text += event.unicode
-
-            #  Window resizing
-            elif event.type == pg.VIDEORESIZE:
-                surface = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
-
-        # Background color    
-        screen.fill(menuBG)
-       
-        # Draw main menu
-        if state == 'main':
-            # change color of buttons when mouse is on them
-            mousePos = pg.mouse.get_pos()
-            if startBtn.collide(mousePos):
-                startBtn.color = colorOver
-            else:
-                startBtn.color = colorBtn
-
-            if optionsBtn.collide(mousePos):
-                optionsBtn.color = colorOver
-            else:
-                optionsBtn.color = colorBtn
-
-            if helpBtn.collide(mousePos):
-                helpBtn.color = colorOver
-            else:
-                helpBtn.color = colorBtn
-
-            if aboutBtn.collide(mousePos):
-                aboutBtn.color = colorOver
-            else:
-                aboutBtn.color = colorBtn
-
-            if exitBtn.collide(mousePos):
-                exitBtn.color = colorOver
-            else:
-                exitBtn.color = colorBtn
-
-            # Claim Copyrights
-            TextCC1 = creditFont.render('Copyright © 2019 A.Alyssandrakis, M.Kaipis, L.Konstantellos, M.Lagou, N.Perreas, K.Stratakos.', True, [0,0,0])
-            screen.blit(TextCC1, (int(screen.get_width() / 2 - TextCC1.get_size()[0] / 2),
-                                int(9*screen.get_height() / 10-TextCC1.get_size()[1]/2)))
-
-            TextCC2 = creditFont.render('All Rights Reserved.', True, [0,0,0])
-            screen.blit(TextCC2, (int(screen.get_width() / 2 - TextCC2.get_size()[0] / 2),
-                                int(9.5*screen.get_height() / 10-TextCC2.get_size()[1]/2)))
-
-            # Draw buttons
-            startBtn.draw()
-            optionsBtn.draw()
-            helpBtn.draw()
-            aboutBtn.draw()
-            exitBtn.draw()
-
-        # Draw maze size input dialog
-        elif state == 'options':
-            mousePos = pg.mouse.get_pos()
-            if returnBtn.collide(mousePos):
-                returnBtn.color = colorOver
-            else:
-                returnBtn.color = colorBtn
-
-            # Draw input box
-            colorInput = colorActive if activeInputBox else colorInactive
-            pg.draw.rect(screen, colorInput, inputBox, 2)
-
-            # Render the label and text
-            textSurface = inputFont.render(text, True, colorBtn)
-            labelSurface = inputFont.render('Input maze size', True, colorBtn)
-
-            # Move the label and text to correct spot
-            textSize = inputFont.size(text)
-            screen.blit(textSurface, (inputBox.x + 5, int(inputBox.y + inputSize[1]/2 - textSize[1]/2)))
-            screen.blit(labelSurface, (inputBox.x, inputBox.y - 50))
-
-            returnBtn.draw()
-
-        # Update display
-        pg.display.flip()
-
-
 def mazeToScreen(pos):
     '''Take a point on the maze and convert it to coordinates on the screen'''
-    global cellSize
     posX = int(pos[1] * cellSize[0] + (cellSize[0]-car.get_size()[0])/2)
     posY = int(pos[0] * cellSize[1])
     return posX, posY
 
 def screenToMaze(pos):
     '''Take coordinates from the screen and convert it to a point on the maze'''
-    global cellSize
     mazePosX = int(pos[0] / cellSize[0])
     mazePosY = int(pos[1] / cellSize[1])
     return mazePosY, mazePosX
@@ -275,14 +37,12 @@ def flip():
     flipped = not flipped
 
 
-End=False
-
 # Pygame window creation + window name
 screen = pg.display.set_mode((901, 701), pg.RESIZABLE)
-pg.display.set_caption("Fast Car")
+pg.display.set_caption("Virtual car navigation")
 
 # Generate maze
-mazeSize = mainMenu()
+mazeSize = menu.Menu(screen).mazeSize
 maze = generateMaze(mazeSize)
 
 # Generate empty start and end positions
@@ -295,6 +55,7 @@ car = pg.image.load('img/car.png')
 p = 0
 started = finished = False
 flipped = False
+End = False  # End flag
 
 while not End:
     # Size of each cell in the grid
@@ -324,6 +85,7 @@ while not End:
                         maze[mazePos[0]][mazePos[1]] = 1
                 except IndexError:
                     pass
+
         elif event.type == pg.KEYDOWN:
             mousePos = pg.mouse.get_pos()
             # When s is pressed set the starting point to the cell the mouse is currently in
@@ -337,10 +99,9 @@ while not End:
                 maze = generateMaze(mazeSize)
                 startPos = None, None
                 endPos = None, None
-            # When r is pressed clear maze and display dialog for maze size
-            elif event.key == pg.K_r and not started:
-
-                mazeSize = mainMenu()
+            # When m is pressed return to Main Menu
+            elif event.key == pg.K_m and not started:
+                mazeSize = menu.Menu(screen).mazeSize
                 maze = generateMaze(mazeSize)
                 startPos = None, None
                 endPos = None, None
@@ -370,7 +131,7 @@ while not End:
             surface = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
 
     # Erase screen
-    screen.fill(black)
+    screen.fill(g.black)
 
     # Draw the grid
     grid = []
@@ -381,15 +142,14 @@ while not End:
             dim = cellSize[0]-1, cellSize[1]-1
             rect = pg.Rect(pos, dim)
             if not maze[i][j]:
-                color = black
+                color = g.black
             elif i == startPos[0] and j == startPos[1]:
-                color = red
+                color = g.red
             elif i == endPos[0] and j == endPos[1]:
-                color = green
+                color = g.green
             else:
                 weight = maze[i][j]**0.5
-                color = list(
-                    map(int, (white[0]/weight, white[1]/weight, white[2]/weight)))
+                color = list(map(int, (g.white[0] / weight, g.white[1] / weight, g.white[2]/weight)))
             grid[i].append(pg.draw.rect(screen, color, rect))
 
     # Check if the user has finished drawing the maze
@@ -403,7 +163,7 @@ while not End:
                 newPoint = x, y
                 newPath.append(newPoint)
 
-            drawPath = pg.draw.lines(screen, blue, False, newPath, 3)
+            drawPath = pg.draw.lines(screen, g.blue, False, newPath, 3)
 
             # Draw/animate the car
             try:
@@ -434,4 +194,6 @@ while not End:
 
     # Update screen
     pg.display.flip()
+
 pg.quit()
+sys.exit()
