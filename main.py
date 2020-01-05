@@ -39,7 +39,7 @@ def flip():
 
 # Pygame window creation + window name
 screen = pg.display.set_mode((901, 701), pg.RESIZABLE)
-pg.display.set_caption("Fast Car")
+pg.display.set_caption("Virtual car navigation")
 
 # Generate maze
 mazeSize = menu.Menu(screen).mazeSize
