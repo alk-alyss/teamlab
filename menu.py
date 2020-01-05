@@ -11,8 +11,8 @@ def multiLineText(text, surface):
     text = text.split('\n')
     for line in text:
         if text.index(line) == 0:
-            textSurface = g.creditsH1.render(line, True, g.colorBtn)
-            textSize = g.creditsH1.size(line)
+            textSurface = g.aboutH1.render(line, True, g.colorBtn)
+            textSize = g.aboutH1.size(line)
         else:
             textSurface = g.creditBody.render(line, True, g.colorBtn)
             textSize = g.creditBody.size(line)
@@ -303,7 +303,7 @@ class Menu:
             self.screen.fill(g.menuBG)
 
             # Draw text
-            multiLineText(g.creditsText, self.screen)
+            multiLineText(g.aboutText, self.screen)
 
             # Draw button
             returnBtn.draw()
