@@ -15,8 +15,8 @@ colorBtn = black  # Button color
 colorOver = 30, 18, 138  # Button hover color
 colorClick = 255, 255, 255  # Button click color
 inputFont = pg.font.Font(None, 46)  # Input font
-aboutH1 = pg.font.Font(None, 46)  # Credits header font
-aboutBody = pg.font.Font(None, 32)  # Credits body font
+aboutH1 = pg.font.Font(None, 46)  # About header font
+aboutBody = pg.font.Font(None, 32)  # About body font
 aboutText = '''Virtual car navigation
 
 
