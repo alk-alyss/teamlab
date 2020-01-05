@@ -1,6 +1,7 @@
 import pygame as pg
 import config as g
 import sys
+import time
 import menu
 from astar import astar
 pg.init()
@@ -36,6 +37,15 @@ def flip():
     car = pg.transform.flip(car, True, False)
     flipped = not flipped
 
+def showMessage(text):
+    textSurface = g.infoH1.render(text, True, g.colorOver)
+    textSize = g.infoH1.size(text)
+    positionX = int(screen.get_width()/2 - textSize[0]/2)
+    positionY = int(screen.get_height()/6 - textSize[1]/2)
+    screen.blit(textSurface, (positionX, positionY))
+    pg.display.flip()
+
+    time.sleep(2)
 
 # Pygame window creation + window name
 screen = pg.display.set_mode((901, 701), pg.RESIZABLE)
@@ -118,7 +128,7 @@ while not End:
                     path = astar(maze, startPos, endPos)
                     started = True
                 else:
-                    print('Please specify a start and end point')
+                    showMessage('Please specify a start and end point')
             # When the navigation is over pressing ENTER enables editing
             elif (event.key == pg.K_RETURN or event.key == pg.K_KP_ENTER) and finished:
                 started = finished = False
@@ -189,7 +199,7 @@ while not End:
 
         # If there is no path print error message
         else:
-            print('No path found')
+            showMessage('No path found')
             started = False
 
     # Update screen

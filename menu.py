@@ -11,8 +11,8 @@ def multiLineText(text, surface, pos):
     text = text.split('\n')
     for line in text:
         if text.index(line) == 0:
-            textSurface = g.infoH1.render(line, True, g.colorBtn)
-            textSize = g.infoH1.size(line)
+            textSurface = g.infoH2.render(line, True, g.colorBtn)
+            textSize = g.infoH2.size(line)
         else:
             textSurface = g.infoBody.render(line, True, g.colorBtn)
             textSize = g.infoBody.size(line)

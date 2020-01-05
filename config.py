@@ -7,7 +7,7 @@ white = 255, 255, 255  # White color
 red = 255, 0, 0  # Red color
 green = 0, 255, 0  # Green color
 blue = 0, 0, 255  # Blue color
-grey = 30, 30, 30  # Grey color
+lightBlue = 0, 149, 255  # Brown color
 menuBG = 108, 169, 223  # Menu background
 colorInactive = black  # Inactive input color
 colorActive = white  # Active input color
@@ -16,7 +16,8 @@ colorOver = 30, 18, 138  # Button hover color
 colorClick = 255, 255, 255  # Button click color
 inputFont = pg.font.Font(None, 46)  # Input font
 
-infoH1 = pg.font.Font(None, 46)  # Info header font
+infoH1 = pg.font.Font(None, 52)  # Info Title font
+infoH2 = pg.font.Font(None, 46)  # Info header font
 infoBody = pg.font.Font(None, 32)  # Info body font
 
 helpText = '''Instructions
