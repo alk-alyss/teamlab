@@ -15,4 +15,27 @@ colorBtn = black  # Button color
 colorOver = 30, 18, 138  # Button hover color
 colorClick = 255, 255, 255  # Button click color
 inputFont = pg.font.Font(None, 46)  # Input font
-creditFont = pg.font.Font(None, 26)  # Credits font
+creditsH1 = pg.font.Font(None, 46)  # Credits header font
+creditBody = pg.font.Font(None, 32)  # Credits body font
+creditsText = '''Virtual car navigation
+
+
+Team project for Intro to Computers course of the Univercity of Patras
+Electical and Computer Engineering Department
+
+
+Created by:
+
+Alkinoos Alyssadrakis
+Michael Kaipis
+Lampros Konstantellos
+Myrto Lagou
+Nickolas Perreas
+Kyriakos Stratakos
+
+A* algorithm adapted from:
+https://medium.com/@nicholas.w.swift/easy-a-star-pathfinding-7e6689c7f7b2
+
+
+Copyright 2019. All rights reserved
+'''

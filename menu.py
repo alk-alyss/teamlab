@@ -7,6 +7,18 @@ def quitGame():
     pg.quit()
     sys.exit()
 
+def multiLineText(text, surface):
+    text = text.split('\n')
+    for line in text:
+        if text.index(line) == 0:
+            textSurface = g.creditsH1.render(line, True, g.colorBtn)
+            textSize = g.creditsH1.size(line)
+        else:
+            textSurface = g.creditBody.render(line, True, g.colorBtn)
+            textSize = g.creditBody.size(line)
+        position = surface.get_width()/2 - textSize[0]/2, surface.get_height()/10 + text.index(line) * textSize[1]
+        surface.blit(textSurface, position)
+
 
 class Button:
     '''Button class'''
@@ -50,14 +62,15 @@ class Menu:
 
     def main(self):
         '''Main menu'''
-        while True:
-            # Create buttons
-            startBtn = Button("img/start.png", 1, self.screen)
-            optionsBtn = Button("img/options.png", 2, self.screen)
-            helpBtn = Button("img/help.png", 3, self.screen)
-            aboutBtn = Button("img/about.png", 4, self.screen)
-            exitBtn = Button("img/exit.png", 5, self.screen)
 
+        # Create buttons
+        startBtn = Button("img/start.png", 1, self.screen)
+        optionsBtn = Button("img/options.png", 2, self.screen)
+        helpBtn = Button("img/help.png", 3, self.screen)
+        aboutBtn = Button("img/about.png", 4, self.screen)
+        exitBtn = Button("img/exit.png", 5, self.screen)
+
+        while True:
             # Event listener
             for event in pg.event.get():
                 if event.type == pg.QUIT: quitGame()
@@ -148,15 +161,6 @@ class Menu:
             else:
                 exitBtn.color = g.colorBtn
 
-            # Claim Copyrights
-            CC1 = g.creditFont.render('Copyright Â© 2019 A.Alyssandrakis, M.Kaipis, L.Konstantellos, M.Lagou, N.Perreas, K.Stratakos.', True, [0,0,0])
-            self.screen.blit(CC1, (int(self.screen.get_width() / 2 - CC1.get_size()[0] / 2),
-                                int(9*self.screen.get_height() / 10-CC1.get_size()[1]/2)))
-
-            CC2 = g.creditFont.render('All Rights Reserved.', True, [0,0,0])
-            self.screen.blit(CC2, (int(self.screen.get_width() / 2 - CC2.get_size()[0] / 2),
-                                int(9.5*self.screen.get_height() / 10-CC2.get_size()[1]/2)))
-
             # Draw buttons
             startBtn.draw()
             optionsBtn.draw()
@@ -173,16 +177,16 @@ class Menu:
         colorInput = g.colorInactive
         activeInputBox = False
 
+        # Create input box
+        inputSize = 300, 50
+        inputPosX = int(self.screen.get_width() / 2 - inputSize[0] / 2)
+        inputPosY = int(self.screen.get_height() / 2 - inputSize[1] / 2)
+        inputBox = pg.Rect(inputPosX, inputPosY, inputSize[0], inputSize[1])
+
+        # Create button
+        returnBtn = Button("img/return.png", 5, self.screen)
+
         while True:
-            # Create input box
-            inputSize = 300, 50
-            inputPosX = int(self.screen.get_width() / 2 - inputSize[0] / 2)
-            inputPosY = int(self.screen.get_height() / 2 - inputSize[1] / 2)
-            inputBox = pg.Rect(inputPosX, inputPosY, inputSize[0], inputSize[1])
-
-            # Create button
-            returnBtn = Button("img/return.png", 5, self.screen)
-
             for event in pg.event.get():
                 if event.type == pg.QUIT: quitGame()
                 elif event.type == pg.MOUSEBUTTONDOWN:
@@ -246,8 +250,63 @@ class Menu:
 
     
     def helpScreen(self):
-        pass
+        '''Help screen'''
+
+        # Create button
+        returnBtn = Button("img/return.png", 6, self.screen)
+
+        while True:
+            for event in pg.event.get():
+                if event.type == pg.QUIT: quitGame()
+                elif event.type == pg.MOUSEBUTTONDOWN:
+                    # Return button
+                    if returnBtn.collide(event.pos):
+                        returnBtn.color = g.colorClick
+                        activeInputBox = False
+                        return
+
+                elif event.type == pg.MOUSEBUTTONUP:
+                    if returnBtn.collide(event.pos):
+                        returnBtn.color = g.colorBtn
+
+            # Background color
+            self.screen.fill(g.menuBG)
+
+            # Draw button
+            returnBtn.draw()
+
+            # Update display
+            pg.display.flip()
 
 
     def aboutScreen(self):
-        pass
+        '''Help screen'''
+
+        # Create button
+        returnBtn = Button("img/return.png", 7, self.screen)
+
+        while True:
+            for event in pg.event.get():
+                if event.type == pg.QUIT: quitGame()
+                elif event.type == pg.MOUSEBUTTONDOWN:
+                    # Return button
+                    if returnBtn.collide(event.pos):
+                        returnBtn.color = g.colorClick
+                        activeInputBox = False
+                        return
+
+                elif event.type == pg.MOUSEBUTTONUP:
+                    if returnBtn.collide(event.pos):
+                        returnBtn.color = g.colorBtn
+
+            # Background color
+            self.screen.fill(g.menuBG)
+
+            # Draw text
+            multiLineText(g.creditsText, self.screen)
+
+            # Draw button
+            returnBtn.draw()
+
+            # Update display
+            pg.display.flip()
