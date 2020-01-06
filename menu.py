@@ -20,7 +20,7 @@ def multiLineText(text, surface, pos):
         if pos == 'center':
             position = surface.get_width() / 2 - textSize[0] / 2, surface.get_height() / 10 + yOff
         elif pos == 'left':
-            position = surface.get_width() / 8, surface.get_height() / 10 + yOff
+            position = surface.get_width() / 10, surface.get_height() / 10 + yOff
 
         yOff += textSize[1]
 
