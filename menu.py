@@ -272,6 +272,13 @@ class Menu:
             # Background color
             self.screen.fill(g.menuBG)
 
+            # Change color of buttons when mouse is on them
+            mousePos = pg.mouse.get_pos()
+            if returnBtn.collide(mousePos):
+                returnBtn.color = g.colorOver
+            else:
+                returnBtn.color = g.colorBtn
+
             # Draw text
             multiLineText(g.helpText, self.screen, 'left')
 
@@ -304,6 +311,13 @@ class Menu:
 
             # Background color
             self.screen.fill(g.menuBG)
+
+            # Change color of buttons when mouse is on them
+            mousePos = pg.mouse.get_pos()
+            if returnBtn.collide(mousePos):
+                returnBtn.color = g.colorOver
+            else:
+                returnBtn.color = g.colorBtn
 
             # Draw text
             multiLineText(g.aboutText, self.screen, 'center')
