@@ -16,6 +16,8 @@
 
 - Press c to clear the maze
 
+- Click a cell to toggle between a wall and least weighted free space
+
 - Set the weigth of the cell the mouse is in by pressing the numbers 0-9 (including Numpad)
 
 - 0 = wall, 1-9 = increasing difficulty
