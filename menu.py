@@ -131,10 +131,6 @@ class Menu:
                         exitBtn.color = g.colorBtn
                 
 
-                #  Window resizing
-                elif event.type == pg.VIDEORESIZE:
-                    surface = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
-
             # Background color
             self.screen.fill(g.menuBG)
 

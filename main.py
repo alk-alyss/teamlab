@@ -38,7 +38,7 @@ def flip():
     flipped = not flipped
 
 def showMessage(text):
-    textSurface = g.infoH1.render(text, True, g.colorOver)
+    textSurface = g.infoH1.render(text, True, g.colorMsg)
     textSize = g.infoH1.size(text)
     positionX = int(screen.get_width()/2 - textSize[0]/2)
     positionY = int(screen.get_height()/6 - textSize[1]/2)
@@ -48,7 +48,7 @@ def showMessage(text):
     time.sleep(2)
 
 # Pygame window creation + window name
-screen = pg.display.set_mode((901, 701), pg.RESIZABLE)
+screen = pg.display.set_mode((901, 701))
 pg.display.set_caption("Virtual car navigation")
 
 # Generate maze
@@ -136,9 +136,6 @@ while not End:
             # Pressing ESC closes the window
             elif event.key == pg.K_ESCAPE:
                 End = True
-        #  Window resizing
-        elif event.type == pg.VIDEORESIZE and not started:
-            surface = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
 
     # Erase screen
     screen.fill(g.black)
