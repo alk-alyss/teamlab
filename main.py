@@ -109,8 +109,8 @@ while not End:
                 maze = generateMaze(mazeSize)
                 startPos = None, None
                 endPos = None, None
-            # When m is pressed return to Main Menu
-            elif event.key == pg.K_m and not started:
+            # When ESC is pressed return to Main Menu
+            elif event.key == pg.K_ESCAPE and not started:
                 mazeSize = menu.Menu(screen).mazeSize
                 maze = generateMaze(mazeSize)
                 startPos = None, None
@@ -133,9 +133,6 @@ while not End:
             elif (event.key == pg.K_RETURN or event.key == pg.K_KP_ENTER) and finished:
                 started = finished = False
                 p = 0
-            # Pressing ESC closes the window
-            elif event.key == pg.K_ESCAPE:
-                End = True
 
     # Erase screen
     screen.fill(g.black)

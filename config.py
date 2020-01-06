@@ -29,8 +29,6 @@ Press e to set the cell the mouse is currently in as the end point
 
 Press c to clear the maze
 
-Press m to return to the Main Menu
-
 Set the weigth of the cell the mouse is in by pressing the numbers 0-9 
 (including Numpad)
 
@@ -40,7 +38,7 @@ Press ENTER to start the navigation
 
 When the navigation is over pressing ENTER enables editing
 
-Pressing ESC closes the window
+Press ESC to return to the Main Menu
 
 '''
 
