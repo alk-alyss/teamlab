@@ -9,6 +9,7 @@ def quitGame():
 
 def multiLineText(text, surface, pos):
     text = text.split('\n')
+    yOff = 0
     for line in text:
         if text.index(line) == 0:
             textSurface = g.infoH2.render(line, True, g.colorBtn)
@@ -17,9 +18,11 @@ def multiLineText(text, surface, pos):
             textSurface = g.infoBody.render(line, True, g.colorBtn)
             textSize = g.infoBody.size(line)
         if pos == 'center':
-            position = surface.get_width() / 2 - textSize[0] / 2, surface.get_height() / 10 + text.index(line) * textSize[1]
+            position = surface.get_width() / 2 - textSize[0] / 2, surface.get_height() / 10 + yOff
         elif pos == 'left':
-            position = surface.get_width() / 8, surface.get_height() / 10 + text.index(line) * textSize[1]
+            position = surface.get_width() / 8, surface.get_height() / 10 + yOff
+
+        yOff += textSize[1]
 
         surface.blit(textSurface, position)
 
