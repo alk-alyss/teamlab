@@ -47,8 +47,8 @@ Press ESC to return to the Main Menu
 aboutText = '''Virtual car navigation
 
 
-Team project for Intro to Computers course of the Univercity of Patras
-Electical and Computer Engineering Department
+Team project for Introduction to Computers course of the University of Patras
+Electical & Computer Engineering Department
 
 
 Created by:
