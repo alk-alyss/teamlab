@@ -1,0 +1,9 @@
+house palette
+house
+tree
+tree palette
+oil palette
+oil
+park 2
+park palette
+road
