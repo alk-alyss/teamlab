@@ -2,11 +2,12 @@ from tkinter import *
 from PIL import Image, ImageTk
 import astar
 import time
+import menu
 #global variables
 
 
 winsize = 800
-n = 10
+n = menu.Menu().mazeSize
 A = [[0 for j in range(n)] for i in range(n)]
 shapes = {}
 d =int( winsize / n)
