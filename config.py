@@ -23,24 +23,18 @@ infoBody = pg.font.Font(None, 32)  # Info body font
 helpText = '''Instructions
 
 
-Press s to set the cell the mouse is currently in as the starting point
+Inside the menu under options select the grid size
 
-Press e to set the cell the mouse is currently in as the end point
+Inside the grid editior select a tile by clicking on the image in the sidebar
 
-Press c to clear the maze
+Place the tile on the grid by clicking the desired spot
 
-Click a cell to toggle between a wall and least weighted free space
+Clicking on a placed tile removes it if the same tile is selected in the sidebar
 
-Set the weigth of the cell the mouse is in by pressing the numbers 0-9 
-(including Numpad)
+The same applies if no tiles are selected in the sidebar
 
-0 = wall, 1-9 = increasing difficulty
-
-Press ENTER to start the navigation
-
-When the navigation is over pressing ENTER enables editing
-
-Press ESC to return to the Main Menu
+Once the start and finish tiles are placed, 
+press the start button to start the navigation
 
 '''
 
