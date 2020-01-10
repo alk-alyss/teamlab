@@ -1,10 +1,12 @@
 from tkinter import *
 from PIL import Image, ImageTk
-
+import astar
+import time
 #global variables
 
+
 winsize = 800
-n = 12
+n = 10
 A = [[0 for j in range(n)] for i in range(n)]
 shapes = {}
 d =int( winsize / n)
@@ -13,6 +15,9 @@ tmp = -1
 car = False
 flag = False
 start = False
+path = []
+speed = 200/d
+angle = 0 
 
 size = (d,d)
 #functions
@@ -44,7 +49,7 @@ def callback(event):
     #temp: 1= square ,2=house ,3=tree , 4=grease ,5=car ,6 = flag 
     global car,flag, temp,n,d,start
     
-    #global a
+    #global  
     x = int(event.x//d)
     y = int(event.y//d)
     
@@ -76,7 +81,7 @@ def callback(event):
             A[x][y] = 5
             car = True
             #here we make a car at (x,y) coordinates
-            shapes[(x,y)] = c.create_rectangle(x*d,y*d,(x+1)*d,(y+1)*d,fill='red')
+            shapes['car'] = c.create_image(x*d+d/2,y*d+d/2,image = car_sprite)
             if flag == True and start == False:
                 shapes['start'] = c4.create_rectangle(1,101,204,204,fill='orange')
                 start = True
@@ -84,7 +89,7 @@ def callback(event):
             A[x][y] = 6
             flag = True
             #here we make flag at (x,y) coordinates
-            shapes[(x,y)] = c.create_rectangle(x*d,y*d,(x+1)*d,(y+1)*d,fill='pink')
+            shapes['flag'] = c.create_image(x*d+d/2,y*d+d/2,image = flag_sprite)
             if car == True and start == False:
                 shapes['start'] = c4.create_rectangle(1,101,204,204,fill='orange')
                 start = True
@@ -117,11 +122,12 @@ def callback(event):
     elif A[x][y] == 5 :
         if temp == 5 or temp == 0 :
             A[x][y] = 0
-            c.delete(shapes[(x,y)])
-            shapes.pop((x,y))
+            c.delete(shapes['car'])
+            shapes.pop('car')
             if start == True:
                 start = False
                 c4.delete(shapes['start'])
+                shapes.pop('start')
                 flag = False
                 print('flag is removed')
             car = False
@@ -129,13 +135,14 @@ def callback(event):
     elif A[x][y] == 6 :
         if temp == 6 or temp == 0 :
             A[x][y] = 0
-            c.delete(shapes[(x,y)])
+            c.delete(shapes['flag'])
             if start == True:
                 start = False
                 c4.delete(shapes['start'])
+                shapes.pop('start')
                 car = False
                 print ('car is removed')
-            shapes.pop((x,y))
+            shapes.pop('flag')
             flag = False
             print('flag is removed')
             
@@ -153,8 +160,8 @@ def callback2(event):
             tmp = -1
             print('temp is 0')
 def callback3(event):
-    global temp
-    global tmp
+    global path ,temp,tmp
+
     if event.x >= 2 and event.x <= 205 :
         print('clicked at ({},{})'.format(event.x,event.y))
         temp = int(event.x//(205/2))+5
@@ -167,7 +174,7 @@ def callback3(event):
             tmp = -1
             print('temp is 0')
 def callback4(event):
-    global shapes, temp,car,flag,start
+    global shapes, temp,car,flag,start,speed
     y = event.y
     if y < 100 :
         tmp = temp
@@ -176,6 +183,7 @@ def callback4(event):
         flag = False
         if start == True:
             c4.delete(shapes['start'])
+            shapes.pop('start')
             start = False
         for i in shapes:
             c.delete(shapes[i])
@@ -186,10 +194,75 @@ def callback4(event):
         draw_grid()
     else:
         print('perform astar')
-
-
-    
+        # prwta metatrepoume ton pinaka se pinaka pou tha dwthei ston astar
+        C=A[::]
+        for i in range(len(C)):
+            for j in range(len(C[i])):
+                if C[i][j]==0: C[i][j]=1
+                elif C[i][j]==1 or C[i][j]==2 or C[i][j]==3 or C[i][j] == 10: C[i][j] = 0
+                elif C[i][j]==5:
+                    C[i][j]=1
+                    start= (i,j)
+                elif C[i][j]==6:
+                    C[i][j]=1
+                    end = (i,j)
+##        for i in range(len(C)):
+##            for j in range(len(C[i])):
+##                print(C[i][j],end=' ')
+##            print("")
+##        print(start,end)
+        path = astar.astar(C,start,end)
+        print(path)
+        if path != 'No path found':
+            prevx = path[0][0]
+            prevy = path[0][1]        
+            for i in range(1,len(path)):
+                x = path[i][0]
+                y= path[i][1]
+                if C[x][y] == 4: car_move(prevx,prevy,path[i][0],path[i][1],int(speed-speed/3))
+                else:car_move(prevx,prevy,path[i][0],path[i][1],speed)
+                prevx = path[i][0]
+                prevy = path[i][1]
                 
+                
+def car_move(x0,y0,x,y,sp = speed):
+    global d,angle
+    dx =  0
+    print(x0,y0,x,y)
+    if x - x0 == 1 :
+        #move right
+        #rotate = 90 - angle and angle += rotate
+        while dx <d :
+            time.sleep(0.01)
+            c.move(shapes['car'],sp,0)
+            dx += sp
+            c.update()
+           
+            
+            
+    elif x - x0 == -1 :
+        #move left
+        while dx < d :
+            time.sleep(0.01)
+            c.move(shapes['car'],-sp,0)
+            dx += sp
+            c.update()
+            
+    elif y - y0 == 1:        
+        #move down
+        while dx < d :
+            time.sleep(0.01)
+            c.move(shapes['car'],0,sp)
+            dx += sp
+            c.update()
+
+    elif y - y0 == -1:
+        #move up
+        while dx < d :
+            time.sleep(0.01)
+            c.move(shapes['car'],0,-sp)
+            dx += sp
+            c.update()            
 #main
 
 win = Tk()
@@ -205,7 +278,8 @@ palette = [sprites['park palette'],sprites['house palette'],sprites['tree palett
 
 road_sprite = ImageTk.PhotoImage(sprites['road'].resize(size))
 
-
+car_sprite = ImageTk.PhotoImage(sprites['car'].resize(size))
+flag_sprite = ImageTk.PhotoImage(sprites['flag'].resize(size))
 gridsprites= []
 a = sprites['park 2'].resize((3*d,3*d))
 a= ImageTk.PhotoImage(a)
@@ -221,7 +295,8 @@ gridsprites.append(a)
 
 draw_grid()
     
-B = ['blue','green','white','yellow']
+##B = ['blue','green','white','yellow']
+
 c2 = Canvas(win,width = 200,height = winsize+50)
 c2.pack(side = RIGHT)
 for i in range(len(palette)):
@@ -230,8 +305,10 @@ for i in range(len(palette)):
     
 c3 = Canvas(win,width = 205,height = 102)
 c3.pack()
-c3.create_rectangle(2,2,102,100,fill = 'red')
-c3.create_rectangle(104,2,204,100,fill = 'pink')
+c3.create_rectangle(2,2,102,100,fill = 'green')
+c3.create_image(50,50,image = car_sprite)
+c3.create_rectangle(104,2,204,100,fill = 'red')
+c3.create_image(150,50,image = flag_sprite)
 
 c4 = Canvas(win,width = 205,height = 205)
 c4.pack()
@@ -243,7 +320,6 @@ c2.bind("<Button-1>",callback2)
 c.bind("<Button-1>", callback)
 c3.bind("<Button-1>", callback3)
 c4.bind("<Button-1>", callback4)
-
 
 
 

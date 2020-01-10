@@ -7,3 +7,4 @@ oil
 park 2
 park palette
 road
+car 
