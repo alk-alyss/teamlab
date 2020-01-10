@@ -268,7 +268,7 @@ def car_move(x0,y0,x,y,sp = speed):
 
 win = Tk()
 win.geometry('{}x{}'.format(winsize+500,winsize))
-win.title('Grid')
+win.title('Virtual car navigation')
 
 c = Canvas(win,width =winsize,height = winsize)
 c.pack(side = LEFT)
@@ -325,5 +325,3 @@ c4.bind("<Button-1>", callback4)
 
 
 win.mainloop()
-
-

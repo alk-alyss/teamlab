@@ -63,6 +63,7 @@ class Button:
 class Menu:
     def __init__(self):
         self.screen = pg.display.set_mode((901, 701))
+        pg.display.set_caption("Virtual car navigation")
         self.mazeSize = 10
         self.text = ''
         self.main()
