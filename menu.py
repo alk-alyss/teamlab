@@ -1,7 +1,6 @@
 import config as g
 import pygame as pg
 import sys
-pg.init()
 
 def quitGame():
     pg.quit()
@@ -62,6 +61,7 @@ class Button:
 
 class Menu:
     def __init__(self):
+        pg.init()
         self.screen = pg.display.set_mode((901, 701))
         pg.display.set_caption("Virtual car navigation")
         self.mazeSize = 10
@@ -89,11 +89,11 @@ class Menu:
                     if startBtn.collide(event.pos):
                         startBtn.color = g.colorClick
                         if not self.text:
-                            pg.quit()
+                            pg.display.quit()
                             return
                         elif self.text.isdigit():
                             self.mazeSize = int(self.text)
-                            pg.quit()
+                            pg.display.quit()
                             return
                         else:
                             print('Invalid. Input only a whole number.')

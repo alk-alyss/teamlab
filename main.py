@@ -1,27 +1,15 @@
+#Libs and modules
+
 from tkinter import *
 from PIL import Image, ImageTk
 import astar
 import time
 import menu
+
 #global variables
-
-
-winsize = 800
-n = menu.Menu().mazeSize
-A = [[0 for j in range(n)] for i in range(n)]
+road_sprite = sprites =start_program = win=speed=prev_angle =car_box=flag_box=start_box=erase_box =C= c=c2=c3=car=flag=temp=car_sprite=flag_sprite=n=d=start=A=erase_box=c4=tmp =gridsprites = 0
+B = [0,0,0,0]
 shapes = {}
-d =int( winsize / n)
-temp = 0
-tmp = -1
-car = False
-flag = False
-start = False
-path = []
-speed = 200/d
-angle = 0 
-
-size = (d,d)
-#functions
 
 def Images():
     sprites = {}
@@ -33,7 +21,7 @@ def Images():
     return(sprites)
 
 def draw_grid():
-    global road_sprite
+    global road_sprite,c,winsize,d
     c.create_line(winsize,0,winsize,winsize)
     c.create_line(0,winsize,winsize,winsize)
     for i in range(0,winsize,d):
@@ -43,12 +31,10 @@ def draw_grid():
     for i in range(0,winsize,d):
         for j in range(0,winsize,d):
             c.create_image(i+d/2,j+d/2,image = road_sprite)
-        
-    
-
+            
 def callback(event):
     #temp: 1= square ,2=house ,3=tree , 4=grease ,5=car ,6 = flag 
-    global car,flag, temp,n,d,start
+    global c,car,flag, temp,n,d,start,A,shapes,gridsprites,car_sprite,flag_sprite,car_box,flag_box
     
     #global  
     x = int(event.x//d)
@@ -84,7 +70,8 @@ def callback(event):
             #here we make a car at (x,y) coordinates
             shapes['car'] = c.create_image(x*d+d/2,y*d+d/2,image = car_sprite)
             if flag == True and start == False:
-                shapes['start'] = c4.create_rectangle(1,101,204,204,fill='orange')
+                start_box  = c4.create_rectangle(1,101,204,204,fill='orange')
+                shapes['start'] = start_box
                 start = True
         elif temp == 6 and flag == False:
             A[x][y] = 6
@@ -92,7 +79,8 @@ def callback(event):
             #here we make flag at (x,y) coordinates
             shapes['flag'] = c.create_image(x*d+d/2,y*d+d/2,image = flag_sprite)
             if car == True and start == False:
-                shapes['start'] = c4.create_rectangle(1,101,204,204,fill='orange')
+                start_box  = c4.create_rectangle(1,101,204,204,fill='orange')
+                shapes['start'] = start_box
                 start = True
 
             
@@ -147,39 +135,47 @@ def callback(event):
             flag = False
             print('flag is removed')
             
-        
 def callback2(event):
-    global temp
-    global tmp
+    global temp,tmp,c4,c2,erase_box,B
+
     if event.x >= 10 and event.x <= 190 :
         temp = int(event.y//(winsize/4))+1
+        config(tmp,temp)
         if temp != tmp:
-            tmp = temp
-            print ("clicked at box {}".format(temp))
+           tmp = temp
+           print ("clicked at box {}".format(temp))
+
         else:
+            c2.itemconfig(B[temp-1],outline = 'black',width = 1)
             temp = 0
             tmp = -1
             print('temp is 0')
+            
 def callback3(event):
-    global path ,temp,tmp
+    global temp,tmp
 
     if event.x >= 2 and event.x <= 205 :
         print('clicked at ({},{})'.format(event.x,event.y))
         temp = int(event.x//(205/2))+5
+        config(tmp,temp)
         if temp != tmp:
-            if temp == 1: print('car is pressed')
-            elif temp == 2:print('flag is pressed')
+            if temp == 5: print('car is pressed')
+            elif temp == 6:print('flag is pressed')
             tmp = temp
         else:
             temp = 0
             tmp = -1
             print('temp is 0')
+
 def callback4(event):
-    global shapes, temp,car,flag,start,speed
+    global shapes,start_program, temp,win,car,flag,start,speed,tmp,erase_box,B,c2,c4,A,C,sprites
     y = event.y
     if y < 100 :
+        temp = 7
+        config(tmp,temp)
         tmp = temp
-        temp = 0
+##        time.sleep(0.5)
+##        
         car = False
         flag = False
         if start == True:
@@ -194,7 +190,11 @@ def callback4(event):
                 A[i][j] = 0
         draw_grid()
     else:
+        temp = 8
+        config(tmp,temp)
+        tmp = temp
         print('perform astar')
+        
         # prwta metatrepoume ton pinaka se pinaka pou tha dwthei ston astar
         C=A[::]
         for i in range(len(C)):
@@ -224,15 +224,56 @@ def callback4(event):
                 else:car_move(prevx,prevy,path[i][0],path[i][1],speed)
                 prevx = path[i][0]
                 prevy = path[i][1]
-                
-                
+        time.sleep(2)
+        win.destroy()
+        car = flag = start = False
+        
+        start_program = True
+
+def config(tmp,temp):
+    global B,erase_box,flag_box,start_box,car_box,c2,c3,c4
+    if temp > 0 and temp < 5:
+        c2.itemconfig(B[temp-1],outline = 'red',width = 5)
+    elif temp >= 5 and temp <= 6:
+        if temp == 5: c3.itemconfig(car_box,outline = 'yellow',width = 5)
+        if temp == 6: c3.itemconfig(flag_box,outline = 'yellow',width = 5)
+    elif temp >= 7 and temp <=8:
+        if temp == 7: c4.itemconfig(erase_box,outline = 'yellow',width = 5)
+        if temp == 8: c4.itemconfig(start_box,outline = 'yellow',width = 5)
+
+    if tmp > 0 and tmp < 5:
+        c2.itemconfig(B[tmp-1],outline = 'black',width=1)
+    elif tmp >= 5 and tmp <= 6:
+        if tmp == 5: c3.itemconfig(car_box,outline = 'black',width =1 )
+        if tmp == 6: c3.itemconfig(flag_box ,outline = 'black',width = 1)
+    elif tmp >= 7 and tmp <=8:
+        if tmp == 7: c4.itemconfig(erase_box,outline = 'black',width = 1)
+        if tmp == 8: c4.itemconfig(start_box,outline = 'black',width = 1)
+
+def rotate_(im,old_dir,new_dir):
+    if new_dir == "down" : new_dir = 180
+    if new_dir == 'left' : new_dir = -90
+    if new_dir == 'right' : new_dir = 90
+    if new_dir == 'up' : new_dir = 0
+    if old_dir == "down" : old_dir = 180
+    if old_dir == 'left' : old_dir = -90
+    if old_dir == 'right' : old_dir = 90
+    if old_dir == 'up' : old_dir = 0
+    im = im.rotate(old_dir - new_dir)
+    print(old_dir - new_dir)
+##    im = ImageTk.PhotoImage(im)
+    return(im)
+              
 def car_move(x0,y0,x,y,sp = speed):
-    global d,angle
+    print('speed is', sp)
+    global d,prev_angle,c,shapes,speed,sprites
     dx =  0
     print(x0,y0,x,y)
     if x - x0 == 1 :
         #move right
-        #rotate = 90 - angle and angle += rotate
+        a = rotate_(sprites['car'],prev_angle,'right')
+        prev_angle = 'right'
+ 
         while dx <d :
             time.sleep(0.01)
             c.move(shapes['car'],sp,0)
@@ -243,6 +284,9 @@ def car_move(x0,y0,x,y,sp = speed):
             
     elif x - x0 == -1 :
         #move left
+        a = rotate_(sprites['car'],prev_angle,'left')
+        prev_angle = 'left'
+
         while dx < d :
             time.sleep(0.01)
             c.move(shapes['car'],-sp,0)
@@ -251,6 +295,9 @@ def car_move(x0,y0,x,y,sp = speed):
             
     elif y - y0 == 1:        
         #move down
+        a = rotate_(sprites['car'],prev_angle,'down')
+        prev_angle = 'down'
+
         while dx < d :
             time.sleep(0.01)
             c.move(shapes['car'],0,sp)
@@ -259,69 +306,95 @@ def car_move(x0,y0,x,y,sp = speed):
 
     elif y - y0 == -1:
         #move up
+        a = rotate_(sprites['car'],prev_angle,'up')
+        prev_angle = 'up'
+
         while dx < d :
             time.sleep(0.01)
             c.move(shapes['car'],0,-sp)
             dx += sp
             c.update()            
+
+
+
+
+
+def main():
+    global road_sprite,start_program,win,C,erase_box,sprites,car_box,erase_box,flag_box,car_sprite,flag_sprite,c,winsize,d,B,c2,c3,c4,car,flag,speed, temp,tmp ,n,d,start,A,shapes,erase_box,gridsprites
+    winsize = 800
+    start_program =False
+    n = menu.Menu().mazeSize
+    A = [[0 for j in range(n)] for i in range(n)]
+    d =int( winsize / n)
+    size = (d,d)
+    speed = d/20
+    win = Tk()
+    win.geometry('{}x{}'.format(winsize+500,winsize))
+    win.title('Grid')
+
+    c = Canvas(win,width =winsize,height = winsize)
+    c.pack(side = LEFT)
+    sprites = Images()
+    palette = [sprites['park palette'],sprites['house palette'],sprites['tree palette'],sprites['oil palette']]
+
+    road_sprite = ImageTk.PhotoImage(sprites['road'].resize(size))
+
+    car_sprite = ImageTk.PhotoImage(sprites['car'].resize(size))
+    car_palette = ImageTk.PhotoImage(sprites['car'].resize((80,80)))
+    flag_sprite = ImageTk.PhotoImage(sprites['flag'].resize(size))
+    flag_palette = ImageTk.PhotoImage(sprites['flag'].resize((80,80)))
+    gridsprites= []
+    a = sprites['park 2'].resize((3*d,3*d))
+    a= ImageTk.PhotoImage(a)
+
+    gridsprites = [sprites['house'],sprites['tree'],sprites['oil']]
+    for i in range(len(palette)):
+        palette[i] = palette[i].resize((200,200))
+        palette[i] = ImageTk.PhotoImage(palette[i])
+    for i in range(len(gridsprites)):
+        gridsprites[i] = gridsprites[i].resize(size)
+        gridsprites[i] = ImageTk.PhotoImage(gridsprites[i])
+    gridsprites.append(a)
+    draw_grid()
+    
+    c2 = Canvas(win,width = 200,height = winsize+50)
+    c2.pack(side = RIGHT)
+    for i in range(len(palette)):
+        B[i]=c2.create_rectangle(2,i*winsize/4+2,200,winsize/4+i*winsize/4-3,fill = 'white')
+        c2.create_image(100,winsize/8 + i * winsize/4,image = palette[i])
+    c3 = Canvas(win,width = 205,height = 102)
+    c3.pack()
+    car_box = c3.create_rectangle(2,2,102,100,fill = 'green')
+    c3.create_image(50,50,image = car_palette)
+    flag_box = c3.create_rectangle(104,2,204,100,fill = 'red')
+    c3.create_image(150,50,image = flag_palette)
+
+    c4 = Canvas(win,width = 205,height = 205)
+    c4.pack()
+    erase_box = c4.create_rectangle(1,1,204,99,fill = 'black')
+
+    c5 = Canvas(win,width = 101,height = 101)
+    c5.pack()
+
+    c.bind("<Button-1>", callback)
+    c2.bind("<Button-1>",callback2)
+    c3.bind("<Button-1>", callback3)
+    c4.bind("<Button-1>", callback4)
+##    if start_program == True:
+##        start_program = False
+##        main()
+    
+    win.mainloop()
+
+
 #main
-
-win = Tk()
-win.geometry('{}x{}'.format(winsize+500,winsize))
-win.title('Virtual car navigation')
-
-c = Canvas(win,width =winsize,height = winsize)
-c.pack(side = LEFT)
+while True:
+    main()
+    if start_program == True:
+        main()
 
 
-sprites = Images()
-palette = [sprites['park palette'],sprites['house palette'],sprites['tree palette'],sprites['oil palette']]
 
-road_sprite = ImageTk.PhotoImage(sprites['road'].resize(size))
 
-car_sprite = ImageTk.PhotoImage(sprites['car'].resize(size))
-flag_sprite = ImageTk.PhotoImage(sprites['flag'].resize(size))
-gridsprites= []
-a = sprites['park 2'].resize((3*d,3*d))
-a= ImageTk.PhotoImage(a)
-
-gridsprites = [sprites['house'],sprites['tree'],sprites['oil']]
-for i in range(len(palette)):
-    palette[i] = palette[i].resize((200,200))
-    palette[i] = ImageTk.PhotoImage(palette[i])
-for i in range(len(gridsprites)):
-    gridsprites[i] = gridsprites[i].resize(size)
-    gridsprites[i] = ImageTk.PhotoImage(gridsprites[i])
-gridsprites.append(a)
-
-draw_grid()
     
-##B = ['blue','green','white','yellow']
-
-c2 = Canvas(win,width = 200,height = winsize+50)
-c2.pack(side = RIGHT)
-for i in range(len(palette)):
-    c2.create_rectangle(2,i*winsize/4+2,200,winsize/4+i*winsize/4-3)
-    c2.create_image(100,winsize/8 + i * winsize/4,image = palette[i]) 
     
-c3 = Canvas(win,width = 205,height = 102)
-c3.pack()
-c3.create_rectangle(2,2,102,100,fill = 'green')
-c3.create_image(50,50,image = car_sprite)
-c3.create_rectangle(104,2,204,100,fill = 'red')
-c3.create_image(150,50,image = flag_sprite)
-
-c4 = Canvas(win,width = 205,height = 205)
-c4.pack()
-c4.create_rectangle(1,1,204,99,fill = 'black')
-
-
-
-c2.bind("<Button-1>",callback2)
-c.bind("<Button-1>", callback)
-c3.bind("<Button-1>", callback3)
-c4.bind("<Button-1>", callback4)
-
-
-
-win.mainloop()
