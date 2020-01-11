@@ -25,7 +25,7 @@ helpText = '''Instructions
 
 Inside the menu under options select the grid size
 
-Inside the grid editior select a tile by clicking on the image in the sidebar
+Inside the grid editor select a tile by clicking on the image in the sidebar
 
 Place the tile on the grid by clicking the desired spot
 
@@ -34,6 +34,7 @@ Clicking on a placed tile removes it if the same tile is selected in the sidebar
 The same applies if no tiles are selected in the sidebar
 
 Once the start and finish tiles are placed, 
+
 press the start button to start the navigation
 
 '''
@@ -41,7 +42,7 @@ press the start button to start the navigation
 aboutText = '''Virtual car navigation
 
 
-Team project for Introduction to Computers course of the University of Patras
+Team project for "Introduction to Computers" course of the University of Patras
 Electical & Computer Engineering Department
 
 
