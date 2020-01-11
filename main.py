@@ -7,17 +7,22 @@ import time
 import menu
 
 #global variables
-road_sprite = sprites =start_program = win=speed=prev_angle =car_box=flag_box=start_box=erase_box =C= c=c2=c3=car=flag=temp=car_sprite=flag_sprite=n=d=start=A=erase_box=c4=tmp =gridsprites = 0
+road_sprite = start_sprite =erase_sprite = sprites =start_program = win=speed=prev_angle =car_box=flag_box=start_box=erase_box =C= c=c2=c3=car=flag=temp=car_sprite=flag_sprite=n=d=start=A=erase_box=c4=tmp =gridsprites = 0
 B = [0,0,0,0]
+
 shapes = {}
 
 def Images():
+    
     sprites = {}
     my_file = open('sprite_names.txt', 'r')
     for line in my_file:
-        line = line[:-1]
-        a = Image.open("sprites/{}.png".format(line))
-        sprites[line]=a
+        try:
+            line = line[:-1]
+            a = Image.open("sprites/{}.png".format(line))
+            sprites[line]=a
+        except:
+            break
     return(sprites)
 
 def draw_grid():
@@ -34,7 +39,7 @@ def draw_grid():
             
 def callback(event):
     #temp: 1= square ,2=house ,3=tree , 4=grease ,5=car ,6 = flag 
-    global c,car,flag, temp,n,d,start,A,shapes,gridsprites,car_sprite,flag_sprite,car_box,flag_box
+    global c,car,flag,start_sprite, temp,n,d,start,A,shapes,gridsprites,car_sprite,flag_sprite,car_box,flag_box
     
     #global  
     x = int(event.x//d)
@@ -71,6 +76,7 @@ def callback(event):
             shapes['car'] = c.create_image(x*d+d/2,y*d+d/2,image = car_sprite)
             if flag == True and start == False:
                 start_box  = c4.create_rectangle(1,101,204,204,fill='orange')
+                shapes['start_sprite'] = c4.create_image(100,150,image = start_sprite)
                 shapes['start'] = start_box
                 start = True
         elif temp == 6 and flag == False:
@@ -80,6 +86,7 @@ def callback(event):
             shapes['flag'] = c.create_image(x*d+d/2,y*d+d/2,image = flag_sprite)
             if car == True and start == False:
                 start_box  = c4.create_rectangle(1,101,204,204,fill='orange')
+                shapes['start_sprite'] = c4.create_image(100,150,image = start_sprite)
                 shapes['start'] = start_box
                 start = True
 
@@ -116,8 +123,8 @@ def callback(event):
             if start == True:
                 start = False
                 c4.delete(shapes['start'])
+                c4.delete(shapes['start_sprite'])
                 shapes.pop('start')
-                flag = False
                 print('flag is removed')
             car = False
             print('car is removed')
@@ -128,8 +135,8 @@ def callback(event):
             if start == True:
                 start = False
                 c4.delete(shapes['start'])
+                c4.delete(shapes['start_sprite'])
                 shapes.pop('start')
-                car = False
                 print ('car is removed')
             shapes.pop('flag')
             flag = False
@@ -168,7 +175,7 @@ def callback3(event):
             print('temp is 0')
 
 def callback4(event):
-    global shapes,start_program, temp,win,car,flag,start,speed,tmp,erase_box,B,c2,c4,A,C,sprites
+    global shapes,start_program,start_sprite,erase_sprite, temp,win,car,flag,start,speed,tmp,erase_box,B,c2,c4,A,C,sprites,prev_angle
     y = event.y
     if y < 100 :
         temp = 7
@@ -180,6 +187,7 @@ def callback4(event):
         flag = False
         if start == True:
             c4.delete(shapes['start'])
+            c4.delete(shapes['start_sprite'])
             shapes.pop('start')
             start = False
         for i in shapes:
@@ -266,17 +274,19 @@ def rotate_(im,old_dir,new_dir):
               
 def car_move(x0,y0,x,y,sp = speed):
     print('speed is', sp)
-    global d,prev_angle,c,shapes,speed,sprites
+    global d,prev_angle,c,shapes,speed,sprites,size
     dx =  0
     print(x0,y0,x,y)
     if x - x0 == 1 :
         #move right
-        a = rotate_(sprites['car'],prev_angle,'right')
-        prev_angle = 'right'
+        a = sprites['car'].rotate(0)
+        a = a.resize((d,d))
+        a = ImageTk.PhotoImage(a)
  
         while dx <d :
+            c.delete(shapes['car'])
             time.sleep(0.01)
-            c.move(shapes['car'],sp,0)
+            shapes['car'] = c.create_image(x0*d+d/2+dx,d*y0+d/2,image = a)
             dx += sp
             c.update()
            
@@ -284,44 +294,58 @@ def car_move(x0,y0,x,y,sp = speed):
             
     elif x - x0 == -1 :
         #move left
-        a = rotate_(sprites['car'],prev_angle,'left')
-        prev_angle = 'left'
+        a = sprites['car'].rotate(180)
+        a = a.resize((d,d))
+        a = ImageTk.PhotoImage(a)
+
 
         while dx < d :
+            c.delete(shapes['car']) 
             time.sleep(0.01)
-            c.move(shapes['car'],-sp,0)
+            shapes['car'] = c.create_image(x0*d+d/2-dx,d*y0+d/2,image = a)
             dx += sp
             c.update()
             
     elif y - y0 == 1:        
         #move down
-        a = rotate_(sprites['car'],prev_angle,'down')
-        prev_angle = 'down'
+        a = sprites['car'].rotate(270)
+        a = a.resize((d,d))
+        a = ImageTk.PhotoImage(a)
 
         while dx < d :
+            c.delete(shapes['car'])
             time.sleep(0.01)
-            c.move(shapes['car'],0,sp)
+            shapes['car'] = c.create_image(x0*d+d/2,d*y0+d/2+dx,image = a)
+##            c.move(shapes['car'],0,sp)
             dx += sp
             c.update()
 
     elif y - y0 == -1:
-        #move up
-        a = rotate_(sprites['car'],prev_angle,'up')
-        prev_angle = 'up'
 
+
+        #move up
+        a = sprites['car'].rotate(90)
+        a = a.resize((d,d))
+        a = ImageTk.PhotoImage(a)
+                 
         while dx < d :
+            c.delete(shapes['car'])
             time.sleep(0.01)
-            c.move(shapes['car'],0,-sp)
+            shapes['car'] = c.create_image(x0*d+d/2,d*y0+d/2-dx,image = a)
+
+            c.update() 
+               
             dx += sp
-            c.update()            
+                       
 
 
 
 
 
 def main():
-    global road_sprite,start_program,win,C,erase_box,sprites,car_box,erase_box,flag_box,car_sprite,flag_sprite,c,winsize,d,B,c2,c3,c4,car,flag,speed, temp,tmp ,n,d,start,A,shapes,erase_box,gridsprites
+    global road_sprite,erase_sprite,prev_angle,start_sprite,start_program,win,C,erase_box,sprites,car_box,erase_box,flag_box,car_sprite,flag_sprite,c,winsize,d,B,c2,c3,c4,car,flag,speed, temp,tmp ,n,d,start,A,shapes,erase_box,gridsprites
     winsize = 800
+    prev_angle = 'right'
     start_program =False
     n = menu.Menu().mazeSize
     A = [[0 for j in range(n)] for i in range(n)]
@@ -338,7 +362,8 @@ def main():
     palette = [sprites['park palette'],sprites['house palette'],sprites['tree palette'],sprites['oil palette']]
 
     road_sprite = ImageTk.PhotoImage(sprites['road'].resize(size))
-
+    start_sprite=ImageTk.PhotoImage(sprites['start'].resize(size))
+    
     car_sprite = ImageTk.PhotoImage(sprites['car'].resize(size))
     car_palette = ImageTk.PhotoImage(sprites['car'].resize((80,80)))
     flag_sprite = ImageTk.PhotoImage(sprites['flag'].resize(size))
@@ -371,7 +396,10 @@ def main():
 
     c4 = Canvas(win,width = 205,height = 205)
     c4.pack()
-    erase_box = c4.create_rectangle(1,1,204,99,fill = 'black')
+    erase_box = c4.create_rectangle(1,1,204,99,fill = 'white')
+    er = ImageTk.PhotoImage(sprites['reset'].resize((100,100)))
+    erase_sprite = c4.create_image(100,50,image = er)
+    
 
     c5 = Canvas(win,width = 101,height = 101)
     c5.pack()

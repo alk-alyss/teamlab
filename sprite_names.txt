@@ -1,6 +1,7 @@
 flag
 house palette
 house
+reset
 tree
 tree palette
 oil palette
@@ -9,3 +10,4 @@ park 2
 park palette
 road
 car
+start
