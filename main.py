@@ -46,15 +46,15 @@ def callback(event):
     y = int(event.y//d)
     
     
-    if x<n and y  < n:
-        print ("clicked at box ({},{})".format( event.x//d, event.y//d))
+    # if x<n and y  < n:
+        # print ("clicked at box ({},{})".format( event.x//d, event.y//d))
     if A[x][y] == 0:
         if temp == 1:
             #check around squares and if all are 0 then build a square
             if x - 1 >= 0 and x+1 < n and y-1 >=0 and y+1 < n and  A[x-1][y-1] == 0 and A[x][y-1]==0 and A[x+1][y-1] ==0 and A[x-1][y] ==0 and A[x+1][y]==0 and A[x-1][y+1]==0 and A[x][y+1]==0 and A[x+1][y+1]==0:
                 A[x-1][y-1]=A[x][y-1] =A[x+1][y-1] =A[x-1][y] =A[x+1][y]=A[x-1][y+1]=A[x][y+1]=A[x+1][y+1]= 1
                 A[x][y] = 10
-                print('building square')
+                # print('building square')
                 #here we make a square at (x-1,y-1)-->(x+1,y+1)
                 shapes[(x,y)] = c.create_image((x*d+d/2),(y*d+d/2),image=gridsprites[3])
         elif temp == 2:
@@ -96,25 +96,25 @@ def callback(event):
             A[x][y]=A[x-1][y-1]=A[x][y-1] =A[x+1][y-1] =A[x-1][y] =A[x+1][y]=A[x-1][y+1]=A[x][y+1]=A[x+1][y+1]= 0
             c.delete(shapes[(x,y)])
             shapes.pop((x,y)) 
-            print('square is demolished')
+            # print('square is demolished')
     elif A[x][y] == 2:
         if temp == 2 or temp == 0:
             A[x][y] = 0
             c.delete(shapes[(x,y)])
             shapes.pop((x,y)) 
-            print('house is demolished')
+            # print('house is demolished')
     elif A[x][y] == 3:
         if temp == 3 or temp == 0:
             A[x][y] = 0
             c.delete(shapes[(x,y)])
             shapes.pop((x,y)) 
-            print('tree is demolished')
+            # print('tree is demolished')
     elif A[x][y] == 4:
         if temp == 4 or temp == 0:
             A[x][y] = 0
             c.delete(shapes[(x,y)])
             shapes.pop((x,y)) 
-            print('grease is demolished')
+            # print('grease is demolished')
     elif A[x][y] == 5 :
         if temp == 5 or temp == 0 :
             A[x][y] = 0
@@ -125,9 +125,9 @@ def callback(event):
                 c4.delete(shapes['start'])
                 c4.delete(shapes['start_sprite'])
                 shapes.pop('start')
-                print('flag is removed')
+                # print('flag is removed')
             car = False
-            print('car is removed')
+            # print('car is removed')
     elif A[x][y] == 6 :
         if temp == 6 or temp == 0 :
             A[x][y] = 0
@@ -137,10 +137,10 @@ def callback(event):
                 c4.delete(shapes['start'])
                 c4.delete(shapes['start_sprite'])
                 shapes.pop('start')
-                print ('car is removed')
+                # print ('car is removed')
             shapes.pop('flag')
             flag = False
-            print('flag is removed')
+            # print('flag is removed')
             
 def callback2(event):
     global temp,tmp,c4,c2,erase_box,B
@@ -150,29 +150,29 @@ def callback2(event):
         config(tmp,temp)
         if temp != tmp:
            tmp = temp
-           print ("clicked at box {}".format(temp))
+        #    print ("clicked at box {}".format(temp))
 
         else:
             c2.itemconfig(B[temp-1],outline = 'black',width = 1)
             temp = 0
             tmp = -1
-            print('temp is 0')
+            # print('temp is 0')
             
 def callback3(event):
     global temp,tmp
 
     if event.x >= 2 and event.x <= 205 :
-        print('clicked at ({},{})'.format(event.x,event.y))
+        # print('clicked at ({},{})'.format(event.x,event.y))
         temp = int(event.x//(205/2))+5
         config(tmp,temp)
         if temp != tmp:
-            if temp == 5: print('car is pressed')
-            elif temp == 6:print('flag is pressed')
+            # if temp == 5: print('car is pressed')
+            # elif temp == 6:print('flag is pressed')
             tmp = temp
         else:
             temp = 0
             tmp = -1
-            print('temp is 0')
+            # print('temp is 0')
 
 def callback4(event):
     global shapes,start_program,start_sprite,erase_sprite, temp,win,car,flag,start,speed,tmp,erase_box,B,c2,c4,A,C,sprites,prev_angle
@@ -201,7 +201,7 @@ def callback4(event):
         temp = 8
         config(tmp,temp)
         tmp = temp
-        print('perform astar')
+        # print('perform astar')
         
         # prwta metatrepoume ton pinaka se pinaka pou tha dwthei ston astar
         C=A[::]
@@ -221,7 +221,7 @@ def callback4(event):
 ##            print("")
 ##        print(start,end)
         path = astar.astar(C,start,end)
-        print(path)
+        # print(path)
         if path != 'No path found':
             prevx = path[0][0]
             prevy = path[0][1]        
@@ -268,15 +268,15 @@ def rotate_(im,old_dir,new_dir):
     if old_dir == 'right' : old_dir = 90
     if old_dir == 'up' : old_dir = 0
     im = im.rotate(old_dir - new_dir)
-    print(old_dir - new_dir)
+    # print(old_dir - new_dir)
 ##    im = ImageTk.PhotoImage(im)
     return(im)
               
 def car_move(x0,y0,x,y,sp = speed):
-    print('speed is', sp)
+    # print('speed is', sp)
     global d,prev_angle,c,shapes,speed,sprites,size
     dx =  0
-    print(x0,y0,x,y)
+    # print(x0,y0,x,y)
     if x - x0 == 1 :
         #move right
         a = sprites['car'].rotate(0)
@@ -354,7 +354,7 @@ def main():
     speed = d/20
     win = Tk()
     win.geometry('{}x{}'.format(winsize+500,winsize))
-    win.title('Grid')
+    win.title('Virtual car navigation')
 
     c = Canvas(win,width =winsize,height = winsize)
     c.pack(side = LEFT)
@@ -420,9 +420,3 @@ while True:
     main()
     if start_program == True:
         main()
-
-
-
-
-    
-    
