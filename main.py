@@ -384,7 +384,7 @@ def main():
     palette = [sprites['park palette'],sprites['house palette'],sprites['tree palette'],sprites['oil palette']]
 
     road_sprite = ImageTk.PhotoImage(sprites['road'].resize(size))
-    start_sprite=ImageTk.PhotoImage(sprites['start'].resize(size))
+    start_sprite=ImageTk.PhotoImage(sprites['start'].resize((100,100)))
     
     car_sprite = ImageTk.PhotoImage(sprites['car'].resize(size))
     car_palette = ImageTk.PhotoImage(sprites['car'].resize((80,80)))
