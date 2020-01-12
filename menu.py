@@ -63,7 +63,7 @@ class Menu:
     def __init__(self):
         pg.init()
         self.screen = pg.display.set_mode((901, 701))
-        pg.display.set_caption("Virtual car navigation")
+        pg.display.set_caption("Virtual Car Navigation")
         self.mazeSize = 10
         self.text = ''
         self.main()

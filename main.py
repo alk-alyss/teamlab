@@ -7,7 +7,7 @@ import time
 import menu
 
 #global variables
-road_sprite = start_sprite =erase_sprite = sprites =start_program = win=speed=prev_angle =car_box=flag_box=start_box=erase_box =C= c=c2=c3=car=flag=temp=car_sprite=flag_sprite=n=d=start=A=erase_box=c4=tmp =gridsprites = 0
+road_sprite = c5=timer_label = timer_sprite = start_time =timer =  start_sprite =erase_sprite = sprites =start_program = win=speed=prev_angle =car_box=flag_box=start_box=erase_box =C= c=c2=c3=car=flag=temp=car_sprite=flag_sprite=n=d=start=A=erase_box=c4=tmp =gridsprites = 0
 B = [0,0,0,0]
 
 shapes = {}
@@ -175,7 +175,7 @@ def callback3(event):
             # print('temp is 0')
 
 def callback4(event):
-    global shapes,start_program,start_sprite,erase_sprite, temp,win,car,flag,start,speed,tmp,erase_box,B,c2,c4,A,C,sprites,prev_angle
+    global shapes,c5,timer_sprite,timer,timer_label,sprites,start_program,start_sprite,erase_sprite,start_time, temp,win,car,flag,start,speed,tmp,erase_box,B,c2,c4,A,C,sprites,prev_angle
     y = event.y
     if y < 100 :
         temp = 7
@@ -202,6 +202,7 @@ def callback4(event):
         config(tmp,temp)
         tmp = temp
         # print('perform astar')
+
         
         # prwta metatrepoume ton pinaka se pinaka pou tha dwthei ston astar
         C=A[::]
@@ -221,8 +222,12 @@ def callback4(event):
 ##            print("")
 ##        print(start,end)
         path = astar.astar(C,start,end)
+        start_time = time.time()
         # print(path)
         if path != 'No path found':
+            timer_label = Label(c5,text =timer,fg = 'black',font = 'Arial 30')
+            c5.create_image(50,50,image = timer_sprite)
+            timer_label.pack()
             prevx = path[0][0]
             prevy = path[0][1]        
             for i in range(1,len(path)):
@@ -232,11 +237,20 @@ def callback4(event):
                 else:car_move(prevx,prevy,path[i][0],path[i][1],speed)
                 prevx = path[i][0]
                 prevy = path[i][1]
+        else:
+            timer_label = Label(c5,text = 'No path found',font = 'Arial 30').pack()
+        
+        try:    
+            # print(timer)
+            timer_label.config(fg = 'red')
+        except:
+            pass
+        c5.update()
         time.sleep(2)
         win.destroy()
         car = flag = start = False
         
-        start_program = True
+    start_program = True
 
 def config(tmp,temp):
     global B,erase_box,flag_box,start_box,car_box,c2,c3,c4
@@ -273,8 +287,7 @@ def rotate_(im,old_dir,new_dir):
     return(im)
               
 def car_move(x0,y0,x,y,sp = speed):
-    # print('speed is', sp)
-    global d,prev_angle,c,shapes,speed,sprites,size
+    global d,prev_angle,c,shapes,speed,sprites,size,timer,timer_label
     dx =  0
     # print(x0,y0,x,y)
     if x - x0 == 1 :
@@ -284,6 +297,8 @@ def car_move(x0,y0,x,y,sp = speed):
         a = ImageTk.PhotoImage(a)
  
         while dx <d :
+            timer = time.time()-start_time
+            timer_label.config(text = '{:.2f}'.format(timer))
             c.delete(shapes['car'])
             time.sleep(0.01)
             shapes['car'] = c.create_image(x0*d+d/2+dx,d*y0+d/2,image = a)
@@ -300,6 +315,8 @@ def car_move(x0,y0,x,y,sp = speed):
 
 
         while dx < d :
+            timer = time.time()-start_time
+            timer_label.config(text = '{:.2f}'.format(timer))
             c.delete(shapes['car']) 
             time.sleep(0.01)
             shapes['car'] = c.create_image(x0*d+d/2-dx,d*y0+d/2,image = a)
@@ -313,6 +330,8 @@ def car_move(x0,y0,x,y,sp = speed):
         a = ImageTk.PhotoImage(a)
 
         while dx < d :
+            timer = time.time()-start_time
+            timer_label.config(text = '{:.2f}'.format(timer))
             c.delete(shapes['car'])
             time.sleep(0.01)
             shapes['car'] = c.create_image(x0*d+d/2,d*y0+d/2+dx,image = a)
@@ -329,6 +348,8 @@ def car_move(x0,y0,x,y,sp = speed):
         a = ImageTk.PhotoImage(a)
                  
         while dx < d :
+            timer = time.time()-start_time
+            timer_label.config(text = '{:.2f}'.format(timer))
             c.delete(shapes['car'])
             time.sleep(0.01)
             shapes['car'] = c.create_image(x0*d+d/2,d*y0+d/2-dx,image = a)
@@ -343,7 +364,7 @@ def car_move(x0,y0,x,y,sp = speed):
 
 
 def main():
-    global road_sprite,erase_sprite,prev_angle,start_sprite,start_program,win,C,erase_box,sprites,car_box,erase_box,flag_box,car_sprite,flag_sprite,c,winsize,d,B,c2,c3,c4,car,flag,speed, temp,tmp ,n,d,start,A,shapes,erase_box,gridsprites
+    global road_sprite,c5,timer_label,timer_sprite,timer ,erase_sprite,prev_angle,start_sprite,start_program,win,C,erase_box,sprites,car_box,erase_box,flag_box,car_sprite,flag_sprite,c,winsize,d,B,c2,c3,c4,car,flag,speed, temp,tmp ,n,d,start,A,shapes,erase_box,gridsprites
     winsize = 800
     prev_angle = 'right'
     start_program =False
@@ -352,9 +373,10 @@ def main():
     d =int( winsize / n)
     size = (d,d)
     speed = d/20
+    timer =  0
     win = Tk()
     win.geometry('{}x{}'.format(winsize+500,winsize))
-    win.title('Virtual car navigation')
+    win.title('Virtual Car Navigation')
 
     c = Canvas(win,width =winsize,height = winsize)
     c.pack(side = LEFT)
@@ -400,9 +422,13 @@ def main():
     er = ImageTk.PhotoImage(sprites['reset'].resize((100,100)))
     erase_sprite = c4.create_image(100,50,image = er)
     
-
-    c5 = Canvas(win,width = 101,height = 101)
+    #timer
+    c5 = Canvas(win,width = 205,height = 205)
     c5.pack()
+    timer_sprite = sprites['timer']
+    timer_sprite = ImageTk.PhotoImage(timer_sprite.resize((75,75)))
+    c5.create_image(50,50,image = timer_sprite)
+
 
     c.bind("<Button-1>", callback)
     c2.bind("<Button-1>",callback2)
